@@ -1101,48 +1101,111 @@ function isMobile() {
   return window.innerWidth <= 768;
 }
 
+/**
+ * [修正 §6] デバイス判定を動的に行う
+ * リサイズイベントで呼び出し、PC/モバイル表示を安定させる
+ */
+function detectDevice() {
+  const mobile = isMobile();
+  // Sidebar: モバイルで非表示、PCで表示
+  document.getElementById('sidebar').style.display    = mobile ? 'none' : 'flex';
+  // Topbar: モバイルで表示
+  document.getElementById('topbar').style.display     = mobile ? 'flex' : 'none';
+  // BottomNav: モバイルで表示
+  document.getElementById('bottom-nav').style.display = mobile ? 'block' : 'none';
+  // モバイルのカレンダー詳細パネルが開いている場合はPC→閉じる
+  if (!mobile) {
+    document.getElementById('cal-detail-mobile').style.display = 'none';
+  }
+}
+
 // ============================================================
-// [2] PERIOD CALCULATION
+// [2] PERIOD CALCULATION  ← [修正 §2] 全面見直し
 // ============================================================
 
 /**
- * 現在の期間の開始日と終了日を計算する
+ * [修正 §2①] appSettings に periodStart を導入し、
+ * 今日の日付に基づいて「現在の期間開始日」を動的に計算する。
+ * 月単位: 今月1日
+ * 週単位: appSettings.periodStart から7日ごとに進んで、今日を含む週の開始日
+ * 戻り値: "YYYY-MM-DD"
  */
-function getCurrentPeriodRange() {
-  if (!appSettings) return null;
+function calcCurrentPeriodStart() {
+  if (!appSettings) return todayStr();
   const today = new Date();
-  const pt = appSettings.periodType;
+  today.setHours(0, 0, 0, 0);
 
-  if (pt === 'month') {
-    // 月単位: 今月1日〜末日
-    const start = new Date(today.getFullYear(), today.getMonth(), 1);
-    const end   = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    return { start: toDateStr(start), end: toDateStr(end) };
+  if (appSettings.periodType === 'month') {
+    // 月単位: 今月1日
+    return toDateStr(new Date(today.getFullYear(), today.getMonth(), 1));
   } else {
-    // 週単位: 設定された開始日を基準に、7日ごとの期間を計算
-    const baseDate = new Date(appSettings.startDate + 'T00:00:00');
-    const todayMs  = today.setHours(0,0,0,0);
-    const baseMs   = baseDate.getTime();
-    const diffDays = Math.floor((todayMs - baseMs) / 86400000);
-    const weekNum  = Math.floor(diffDays / 7);
+    // 週単位: 設定の periodStart を基準に7日ごと
+    const base = new Date(appSettings.periodStart + 'T00:00:00');
+    const diffMs   = today.getTime() - base.getTime();
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffDays < 0) {
+      // 今日がベース開始日より前の場合はベース日自体を使う
+      return appSettings.periodStart;
+    }
+    const weekNum     = Math.floor(diffDays / 7);
     const startOffset = weekNum * 7;
-    const start = new Date(baseMs + startOffset * 86400000);
-    const end   = new Date(baseMs + (startOffset + 6) * 86400000);
-    return { start: toDateStr(start), end: toDateStr(end) };
+    const start = new Date(base.getTime() + startOffset * 86400000);
+    return toDateStr(start);
   }
 }
 
 /**
- * 現在の期間内のレコードを取得
+ * [修正 §2②] periodEnd を動的に算出する
+ * 週単位: periodStart + 6日
+ * 月単位: その月の末日
+ * 引数 startStr: "YYYY-MM-DD" の期間開始日
+ */
+function calcPeriodEnd(startStr) {
+  const parts = startStr.split('-');
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10) - 1; // JS months are 0-based
+  const d = parseInt(parts[2], 10);
+
+  if (appSettings.periodType === 'week') {
+    // 週単位: 開始日 + 6日
+    const end = new Date(y, m, d + 6);
+    return toDateStr(end);
+  } else {
+    // 月単位: その年その月の末日
+    const end = new Date(y, m + 1, 0);
+    return toDateStr(end);
+  }
+}
+
+/**
+ * 現在の期間の開始日と終了日を { start, end } で返す
+ * すべての計算はこの範囲で絶対にフィルタする
+ */
+function getCurrentPeriodRange() {
+  if (!appSettings) return null;
+  const start = calcCurrentPeriodStart();
+  const end   = calcPeriodEnd(start);
+  return { start: start, end: end };
+}
+
+/**
+ * [修正 §2③] 現在の期間内のレコードのみを取得
+ * フィルタ条件: record.date >= periodStart && record.date <= periodEnd
  */
 function getCurrentPeriodRecords() {
   const range = getCurrentPeriodRange();
   if (!range) return [];
-  return records.filter(r => r.date >= range.start && r.date <= range.end);
+  return records.filter(function(r) {
+    return r.date >= range.start && r.date <= range.end;
+  });
 }
 
 /**
- * ダッシュボード用の数値を計算
+ * [修正 §3] ダッシュボード用の数値を計算
+ *
+ * 現在残高 = initialBalance + 期間内収入合計 − 期間内支出合計
+ * 使用率   = 期間内支出合計 / initialBalance  （収入は使用率には混入しない）
  */
 function calcDashboardValues() {
   const initial = appSettings ? appSettings.initialBalance : 0;
@@ -1150,39 +1213,61 @@ function calcDashboardValues() {
 
   let totalExpense = 0;
   let totalIncome  = 0;
-  periodRecords.forEach(r => {
+  periodRecords.forEach(function(r) {
     if (r.type === 'expense') totalExpense += r.amount;
     else                      totalIncome  += r.amount;
   });
 
-  const used    = totalExpense - totalIncome; // 使用済み（収入を引いた正味支出）
-  const current = initial - used;
-  const pct     = initial > 0 ? Math.min((used / initial) * 100, 100) : 0;
+  // 現在残高: initial + 収入 - 支出
+  const current = initial + totalIncome - totalExpense;
 
-  return { initial, used: Math.max(used, 0), current, pct: Math.max(pct, 0) };
+  // 使用率: 支出合計 / initial（収入は混入しない）
+  // 100% を超えた場合はそのまま表示（赤バー）
+  const pct = initial > 0 ? (totalExpense / initial) * 100 : 0;
+
+  return {
+    initial:     initial,
+    used:        totalExpense,   // 使用済み = 期間内支出合計（正数）
+    current:     current,
+    pct:         Math.max(pct, 0) // 負になることはないが安全のため
+  };
 }
 
 // ============================================================
-// [3] AUTO PERIOD UPDATE DETECTION
+// [3] AUTO PERIOD UPDATE DETECTION  ← [修正 §5]
 // ============================================================
 
 /**
- * 期間が切り替わったかどうかを検知
- * 切り替わった場合は古いデータを保持しつつ新期間へ
+ * [修正 §5] 期間が切り替わったかどうかを検知する。
+ *
+ * 動作:
+ *  1. 現在の期間開始日を動的に計算 (calcCurrentPeriodStart)
+ *  2. 保存された lastPeriodStart と比較
+ *  3. 異なる場合 = 期間切り替わり → settings の periodStart を更新し再計算
+ *  4. 過去データは削除しない（フィルタで見えなくなるだけ）
  */
 function checkPeriodTransition() {
   if (!appSettings) return;
 
-  const range = getCurrentPeriodRange();
-  const storedRange = loadJSON('kakeibo_lastPeriodRange', null);
+  const currentStart = calcCurrentPeriodStart();
+  const storedStart  = loadJSON('kakeibo_lastPeriodStart', null);
 
-  if (storedRange && (storedRange.start !== range.start || storedRange.end !== range.end)) {
-    // 期間が変わった → 通知（データは保持、残高は自動リセットされる）
+  if (storedStart && storedStart !== currentStart) {
+    // 期間が変わった
+    // periodStart を新しい開始日に更新して永続化
+    appSettings.periodStart = currentStart;
+    saveJSON(STORAGE_KEYS.SETTINGS, appSettings);
     showToast('新しい期間が開始しました。残高がリセットされました。');
   }
 
-  // 現在の期間を保存
-  saveJSON('kakeibo_lastPeriodRange', range);
+  // 現在の期間開始日を保存（次回起動時の比較用）
+  saveJSON('kakeibo_lastPeriodStart', currentStart);
+
+  // appSettings にも periodStart を常に同期
+  if (appSettings.periodStart !== currentStart) {
+    appSettings.periodStart = currentStart;
+    saveJSON(STORAGE_KEYS.SETTINGS, appSettings);
+  }
 }
 
 // ============================================================
@@ -1204,7 +1289,6 @@ function showSetupModal() {
 
 function saveSetup() {
   const pt = document.getElementById('setup-period-type').value;
-  const sd = pt === 'week' ? document.getElementById('setup-start-date').value : toDateStr(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const ib = parseInt(document.getElementById('setup-initial-balance').value, 10);
 
   if (!ib || ib <= 0) {
@@ -1212,8 +1296,28 @@ function saveSetup() {
     return;
   }
 
-  appSettings = { periodType: pt, startDate: sd, initialBalance: ib };
+  // [修正 §2①] periodStart を正確に設定する
+  let periodStart;
+  if (pt === 'week') {
+    // 週単位: モーダルで入力した開始日を使う
+    periodStart = document.getElementById('setup-start-date').value;
+  } else {
+    // 月単位: 今月1日
+    const now = new Date();
+    periodStart = toDateStr(new Date(now.getFullYear(), now.getMonth(), 1));
+  }
+
+  // settings に periodStart も含める
+  appSettings = {
+    periodType:     pt,
+    periodStart:    periodStart,
+    startDate:      periodStart, // 後方互換のために残す
+    initialBalance: ib
+  };
   saveJSON(STORAGE_KEYS.SETTINGS, appSettings);
+
+  // 期間検知用の保存も初期化
+  saveJSON('kakeibo_lastPeriodStart', calcCurrentPeriodStart());
 
   document.getElementById('setup-modal').classList.remove('show');
   initApp();
@@ -1337,22 +1441,48 @@ function setType(type) {
 
 function submitRecord() {
   const date   = document.getElementById('input-date').value;
-  const amount = parseInt(document.getElementById('input-amount').value, 10);
+  const rawAmt = document.getElementById('input-amount').value;
+  const amount = parseInt(rawAmt, 10);
   const cat    = document.getElementById('input-category').value;
   const memo   = document.getElementById('input-memo').value.trim();
 
-  // Validation
-  if (!date) { showToast('日付を入力してください。'); return; }
-  if (!amount || amount <= 0) { showToast('金額は1円以上の正の値を入力してください。'); return; }
-  if (!cat) { showToast('カテゴリを選んでください。'); return; }
+  // [修正 §7] 保存拒否条件の強化
+  // ① 日付未入力
+  if (!date || date.trim() === '') {
+    showToast('日付を入力してください。');
+    return;
+  }
+  // ② 金額未入力・0・負数チェック
+  if (rawAmt === '' || rawAmt === null || rawAmt === undefined) {
+    showToast('金額を入力してください。');
+    return;
+  }
+  if (isNaN(amount) || amount <= 0) {
+    showToast('金額は1円以上の正の値を入力してください。');
+    return;
+  }
+  // ③ カテゴリ未選択
+  if (!cat) {
+    showToast('カテゴリを選んでください。');
+    return;
+  }
+  // ④ type 未選択チェック（currentType は 'expense' or 'income' のみ)
+  if (currentType !== 'expense' && currentType !== 'income') {
+    showToast('収入か支出を選んでください。');
+    return;
+  }
 
+  // [修正 §7] 収入・支出処理:
+  //  - amount は常に正数で保存する
+  //  - type フィールドで収入/支出を区別する
+  //  - 計算時に type に応じて正負を適用する
   const record = {
-    id: genId(),
-    date: date,
-    type: currentType,
-    amount: amount,
+    id:       genId(),
+    date:     date,
+    type:     currentType,       // "expense" or "income"
+    amount:   amount,            // 正数のみ
     category: cat,
-    memo: memo
+    memo:     memo
   };
 
   records.push(record);
@@ -1479,16 +1609,23 @@ function renderCalendar() {
 
   const initialBal = appSettings ? appSettings.initialBalance : 500;
   const today = todayStr();
+  // targetYm: カレンダーが表示している月の "YYYY-MM" 文字列
+  const targetYm = calYear + '-' + String(calMonth + 1).padStart(2, '0');
 
-  // 日付ごとの支出合計を集める
+  // [修正 §4] カレンダー色分け: 期間内データのみで「日別支出合計」を集める
+  // 収入は色判定には混入しない
+  // 判定: (日別支出合計 / initialBalance) <= 0.2 → 緑, > 0.2 → 赤, 0 → 無表示
+  const range = getCurrentPeriodRange(); // 現在の期間範囲
   const dayExpenses = {};
-  records.forEach(r => {
+  records.forEach(function(r) {
+    // 表示中の月と一致し、かつ期間内であるレコードのみ対象
     const ym = r.date.substring(0, 7);
-    const targetYm = calYear + '-' + String(calMonth + 1).padStart(2, '0');
     if (ym === targetYm) {
+      // 期間内フィルタ: 期間外の日付には色をつけない
+      if (range && (r.date < range.start || r.date > range.end)) return;
       if (!dayExpenses[r.date]) dayExpenses[r.date] = 0;
+      // 支出のみ累積（収入は色判定に混入しない）
       if (r.type === 'expense') dayExpenses[r.date] += r.amount;
-      else                      dayExpenses[r.date] -= r.amount; // 収入は引く
     }
   });
 
@@ -1504,10 +1641,12 @@ function renderCalendar() {
     const exp = dayExpenses[dateStr] || 0;
     const isToday = (dateStr === today);
 
+    // [修正 §4] 色判定: 日別支出合計 / initialBalance で判定
+    // <= 0.2 → 緑, > 0.2 → 赤, 0 → 無表示
     let dotClass = '';
     if (exp > 0) {
-      const threshold = initialBal * 0.2;
-      dotClass = exp <= threshold ? 'green' : 'red';
+      const ratio = exp / initialBal;
+      dotClass = ratio <= 0.2 ? 'green' : 'red';
     }
 
     grid.innerHTML += `
@@ -1536,8 +1675,14 @@ function changeMonth(dir) {
 }
 
 function showCalDetail(dateStr) {
-  // その日のレコード
-  const dayRecords = records.filter(r => r.date === dateStr);
+  // [修正 §2③] その日のレコード: 期間内のみフィルタ
+  const range = getCurrentPeriodRange();
+  const dayRecords = records.filter(function(r) {
+    if (r.date !== dateStr) return false;
+    // 期間外の日付なら詳細には表示しない
+    if (range && (r.date < range.start || r.date > range.end)) return false;
+    return true;
+  });
 
   let totalExp = 0, totalInc = 0;
   dayRecords.forEach(r => {
@@ -1624,17 +1769,38 @@ function renderSettings() {
 
 function saveSettings() {
   const pt = document.getElementById('set-period-type').value;
-  const sd = pt === 'week'
-    ? document.getElementById('set-start-date').value
-    : toDateStr(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const ib = parseInt(document.getElementById('set-initial-balance').value, 10);
 
   if (!ib || ib <= 0) { showToast('初期残高は1円以上の正の値を入力してください。'); return; }
 
-  appSettings = { periodType: pt, startDate: sd, initialBalance: ib };
+  // [修正 §5] 期間種別を変えた瞬間に periodStart を再設定する
+  let newPeriodStart;
+  if (pt === 'week') {
+    // 週単位: 設定画面で入力した開始日を使う
+    newPeriodStart = document.getElementById('set-start-date').value;
+  } else {
+    // 月単位: 今月1日
+    const now = new Date();
+    newPeriodStart = toDateStr(new Date(now.getFullYear(), now.getMonth(), 1));
+  }
+
+  appSettings = {
+    periodType:     pt,
+    periodStart:    newPeriodStart,
+    startDate:      newPeriodStart, // 後方互換
+    initialBalance: ib
+  };
   saveJSON(STORAGE_KEYS.SETTINGS, appSettings);
+
+  // 期間検知用も更新
+  saveJSON('kakeibo_lastPeriodStart', calcCurrentPeriodStart());
+
   showToast('設定を保存しました');
+  // 表示を即再計算
   renderDashboard();
+  if (document.getElementById('tab-calendar').classList.contains('active')) {
+    renderCalendar();
+  }
 }
 
 function clearCurrentPeriodData() {
@@ -1652,10 +1818,11 @@ function clearAllData() {
   records = [];
   saveJSON(STORAGE_KEYS.RECORDS, []);
   localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+  // [修正] 古い & 新しい期間検知キーを両方削除
   localStorage.removeItem('kakeibo_lastPeriodRange');
+  localStorage.removeItem('kakeibo_lastPeriodStart');
   appSettings = null;
   showToast('全データを削除しました');
-  // 再起動画面へ
   location.reload();
 }
 
@@ -1702,10 +1869,19 @@ function bindMobileCalClose() {
  * アプリ初期化
  */
 function initApp() {
+  // [修正 §6] 起動時にデバイス判定を実行
+  detectDevice();
+
   // 設定がない場合はセットアップモーダルを表示
   if (!appSettings) {
     showSetupModal();
     return;
+  }
+
+  // [修正 §2①] 後方互換: 古い設定に periodStart がない場合は自動生成
+  if (!appSettings.periodStart) {
+    appSettings.periodStart = appSettings.startDate || calcCurrentPeriodStart();
+    saveJSON(STORAGE_KEYS.SETTINGS, appSettings);
   }
 
   // 期間切り替え検知
@@ -1717,7 +1893,7 @@ function initApp() {
   // 入力フォーム: 今日の日付をデフォルト
   document.getElementById('input-date').value = todayStr();
 
-  // 復元: 最後に見たタブ
+  // 復元: 最後に見たタブ (uiState.lastTab で永続化済み)
   const lastTab = uiState.lastTab || 'dashboard';
   switchTab(lastTab);
 
@@ -1729,6 +1905,9 @@ function initApp() {
 document.addEventListener('DOMContentLoaded', function() {
   bindNavigation();
   bindMobileCalClose();
+
+  // [修正 §6] リサイズイベントでデバイス判定を再実行
+  window.addEventListener('resize', detectDevice);
 
   // Load saved settings & persist categories/quickInputs
   saveJSON(STORAGE_KEYS.CATEGORIES, categories);
