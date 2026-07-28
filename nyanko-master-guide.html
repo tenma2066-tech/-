@@ -1,0 +1,3001 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>にゃんこ大戦争 完全マスターガイド</title>
+<style>
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f4f1ea;
+  --text: #1f2328;
+  --muted: #5b6570;
+  --line: #e2ded4;
+  --accent: #d9762b;
+  --accent-soft: #fdf1e4;
+  --link: #b1571a;
+  --shadow: 0 1px 3px rgba(31,35,40,.08), 0 8px 24px rgba(31,35,40,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --surface: #1b1e24;
+    --surface-2: #22262e;
+    --text: #e6e8eb;
+    --muted: #9aa3ae;
+    --line: #2e333c;
+    --accent: #f0913f;
+    --accent-soft: #2a211a;
+    --link: #f3a85f;
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="light"] {
+  --bg: #fbfaf7; --surface: #ffffff; --surface-2: #f4f1ea;
+  --text: #1f2328; --muted: #5b6570; --line: #e2ded4;
+  --accent: #d9762b; --accent-soft: #fdf1e4; --link: #b1571a;
+  --shadow: 0 1px 3px rgba(31,35,40,.08), 0 8px 24px rgba(31,35,40,.05);
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --surface: #1b1e24; --surface-2: #22262e;
+  --text: #e6e8eb; --muted: #9aa3ae; --line: #2e333c;
+  --accent: #f0913f; --accent-soft: #2a211a; --link: #f3a85f;
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+               "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- レイアウト ---------- */
+.shell {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr);
+  gap: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 16px 64px; }
+}
+
+/* ---------- ヘッダー ---------- */
+header.hero {
+  background: linear-gradient(135deg, var(--accent) 0%, #b8541c 100%);
+  color: #fff;
+  padding: 56px 24px 48px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+header.hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  line-height: 1.3;
+  letter-spacing: .01em;
+}
+header.hero p { margin: 0; opacity: .92; font-size: .95rem; }
+header.hero .meta { margin-top: 18px; font-size: .82rem; opacity: .85; }
+
+/* ---------- サイドバー目次 ---------- */
+nav.toc {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 28px 0 40px;
+  font-size: .875rem;
+}
+nav.toc > .toctitle,
+nav.toc h2 {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+nav.toc ul { list-style: none; margin: 0; padding: 0; }
+nav.toc li { margin: 0; }
+nav.toc a {
+  display: block;
+  padding: 5px 10px;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 5px 5px 0;
+  line-height: 1.5;
+}
+nav.toc a:hover { color: var(--accent); background: var(--accent-soft); }
+nav.toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+nav.toc ul ul a { padding-left: 22px; font-size: .82rem; opacity: .85; }
+@media (max-width: 900px) {
+  nav.toc {
+    position: static; max-height: none; padding: 20px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; margin-bottom: 28px;
+  }
+  nav.toc ul ul { display: none; }
+}
+
+/* ---------- 本文 ---------- */
+main { min-width: 0; padding-top: 12px; }
+main h2 {
+  font-size: 1.45rem;
+  margin: 64px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--line);
+  scroll-margin-top: 16px;
+  line-height: 1.4;
+}
+main h2:first-of-type { margin-top: 8px; }
+main h3 {
+  font-size: 1.1rem;
+  margin: 40px 0 14px;
+  color: var(--accent);
+  scroll-margin-top: 16px;
+  line-height: 1.5;
+}
+main h4 { font-size: 1rem; margin: 28px 0 10px; }
+main p { margin: 0 0 16px; }
+main ul, main ol { margin: 0 0 18px; padding-left: 1.5em; }
+main li { margin-bottom: 7px; }
+main li > ul, main li > ol { margin: 7px 0 0; }
+a { color: var(--link); }
+a:hover { text-decoration: none; }
+strong { font-weight: 700; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
+
+blockquote {
+  margin: 22px 0;
+  padding: 16px 20px;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+blockquote p { margin: 0 0 10px; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  background: var(--surface-2);
+  padding: .15em .4em;
+  border-radius: 5px;
+  font-size: .88em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+pre {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+pre code { background: none; padding: 0; font-size: .85rem; }
+
+/* ---------- テーブル ---------- */
+.table-wrap {
+  overflow-x: auto;
+  margin: 22px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  -webkit-overflow-scrolling: touch;
+}
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+/* 狭い画面では潰さず、ラッパ内で横スクロールさせる */
+.table-wrap table { min-width: 560px; }
+th, td {
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.65;
+}
+th {
+  background: var(--surface-2);
+  font-weight: 700;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--accent-soft); }
+
+/* ---------- テーマ切替ボタン ---------- */
+#theme-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  line-height: 1;
+}
+#theme-toggle:hover { border-color: var(--accent); }
+
+/* ---------- 印刷 ---------- */
+@media print {
+  nav.toc, #theme-toggle { display: none; }
+  .shell { display: block; max-width: none; padding: 0; }
+  header.hero { background: none; color: #000; padding: 0 0 24px; }
+  body { font-size: 11pt; }
+  main h2 { page-break-after: avoid; margin-top: 32px; }
+  .table-wrap { box-shadow: none; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>にゃんこ大戦争 完全マスターガイド</h1>
+  <p>基礎システムから高難度攻略まで、一冊で完結する攻略リファレンス</p>
+  <div class="meta">Ver.15.5.1 準拠 ／ 2026-07-28 作成 ／ 全28章</div>
+</header>
+
+<div class="shell">
+  <nav class="toc" aria-label="目次">
+    <h2>目次</h2>
+    <div class="toc">
+<ul>
+<li><a href="#1-ゲームの全体像">1. ゲームの全体像</a><ul>
+<li><a href="#核心となる3つのループ">核心となる3つのループ</a></li>
+<li><a href="#本作の勝ち筋の本質">本作の勝ち筋の本質</a></li>
+</ul>
+</li>
+<li><a href="#2-バトルの根幹システム">2. バトルの根幹システム</a><ul>
+<li><a href="#21-バトルの流れ">2.1 バトルの流れ</a></li>
+<li><a href="#22-お金所持金システム">2.2 お金（所持金）システム</a></li>
+<li><a href="#23-城自城敵城">2.3 城（自城・敵城）</a></li>
+<li><a href="#24-出撃コストと再生産">2.4 出撃コストと再生産</a></li>
+<li><a href="#25-にゃんこ砲">2.5 にゃんこ砲</a></li>
+<li><a href="#26-統率力スタミナ">2.6 統率力・スタミナ</a></li>
+</ul>
+</li>
+<li><a href="#3-ステータスの読み方上級者の共通言語">3. ステータスの読み方（上級者の共通言語）</a><ul>
+<li><a href="#31-実戦で見るべき複合指標">3.1 実戦で見るべき複合指標</a></li>
+<li><a href="#32-攻撃タイプ">3.2 攻撃タイプ</a></li>
+</ul>
+</li>
+<li><a href="#4-属性トレイト完全解説">4. 属性（トレイト）完全解説</a><ul>
+<li><a href="#41-属性は重複する">4.1 属性は重複する</a></li>
+<li><a href="#42-特に事故が起きやすい3属性">4.2 特に事故が起きやすい3属性</a></li>
+</ul>
+</li>
+<li><a href="#5-特性能力-完全リファレンス">5. 特性・能力 完全リファレンス</a><ul>
+<li><a href="#51-攻撃防御倍率系">5.1 攻撃・防御倍率系</a></li>
+<li><a href="#52-カテゴリ特効高難度カテゴリ専用">5.2 カテゴリ特効（高難度カテゴリ専用）</a></li>
+<li><a href="#53-妨害系">5.3 妨害系</a></li>
+<li><a href="#54-追加判定系範囲攻撃の拡張">5.4 追加判定系（範囲攻撃の拡張）</a></li>
+<li><a href="#55-防御貫通特殊系">5.5 防御貫通・特殊系</a></li>
+<li><a href="#56-敵専用の能力味方は持たない">5.6 敵専用の能力（味方は持たない）</a></li>
+</ul>
+</li>
+<li><a href="#6-妨害の発動確率表記">6. 妨害の発動確率表記</a></li>
+<li><a href="#7-育成システム全体像">7. 育成システム全体像</a><ul>
+<li><a href="#71-レベルlvと-値">7.1 レベル（Lv）と +値</a></li>
+<li><a href="#72-進化形態">7.2 進化（形態）</a></li>
+<li><a href="#73-マタタビ">7.3 マタタビ</a></li>
+<li><a href="#74-本能np消費">7.4 本能（NP消費）</a></li>
+<li><a href="#75-超本能">7.5 超本能</a></li>
+<li><a href="#76-本能玉オーブ">7.6 本能玉（オーブ）</a></li>
+</ul>
+</li>
+<li><a href="#8-パワーアップ基本ステータス強化">8. パワーアップ（基本ステータス強化）</a><ul>
+<li><a href="#優先順位">優先順位</a></li>
+</ul>
+</li>
+<li><a href="#9-お宝-完全解説">9. お宝 完全解説</a><ul>
+<li><a href="#91-仕組み最重要">9.1 仕組み（最重要）</a></li>
+<li><a href="#92-日本編のお宝全12種">9.2 日本編のお宝（全12種）</a></li>
+<li><a href="#93-未来編のお宝全12種">9.3 未来編のお宝（全12種）</a></li>
+<li><a href="#94-宇宙編のお宝全13種">9.4 宇宙編のお宝（全13種）</a></li>
+<li><a href="#95-効率的な集め方">9.5 効率的な集め方</a></li>
+<li><a href="#96-実務ポイント">9.6 実務ポイント</a></li>
+</ul>
+</li>
+<li><a href="#10-にゃんこ砲基地改造オトート開発隊">10. にゃんこ砲・基地改造（オトート開発隊）</a><ul>
+<li><a href="#主砲の種類と効果">主砲の種類と効果</a></li>
+<li><a href="#土台装飾">土台・装飾</a></li>
+<li><a href="#開発優先度">開発優先度</a></li>
+<li><a href="#基地改造の素材">基地改造の素材</a></li>
+</ul>
+</li>
+<li><a href="#11-にゃんコンボ">11. にゃんコンボ</a><ul>
+<li><a href="#仕様">仕様</a></li>
+<li><a href="#効果量の目安">効果量の目安</a></li>
+<li><a href="#実用コンボ例">実用コンボ例</a></li>
+<li><a href="#編成上の考え方">編成上の考え方</a></li>
+</ul>
+</li>
+<li><a href="#12-ガチャの仕様と立ち回り">12. ガチャの仕様と立ち回り</a><ul>
+<li><a href="#121-排出確率">12.1 排出確率</a></li>
+<li><a href="#122-演出">12.2 演出</a></li>
+<li><a href="#123-ガチャシリーズ別-評価">12.3 ガチャシリーズ別 評価</a></li>
+<li><a href="#124-引くタイミングの戦略">12.4 引くタイミングの戦略</a></li>
+</ul>
+</li>
+<li><a href="#13-コンテンツ地図と進行ロードマップ">13. コンテンツ地図と進行ロードマップ</a><ul>
+<li><a href="#131-メインストーリー">13.1 メインストーリー</a></li>
+<li><a href="#132-推奨進行ロードマップ">13.2 推奨進行ロードマップ</a></li>
+</ul>
+</li>
+<li><a href="#14-ステージ種別カタログ">14. ステージ種別カタログ</a></li>
+<li><a href="#15-狂乱大狂乱開眼ステージ">15. 狂乱・大狂乱・開眼ステージ</a><ul>
+<li><a href="#151-狂乱ステージ">15.1 狂乱ステージ</a></li>
+<li><a href="#152-大狂乱ステージ">15.2 大狂乱ステージ</a></li>
+<li><a href="#153-開眼ステージ">15.3 開眼ステージ</a></li>
+</ul>
+</li>
+<li><a href="#16-降臨ステージ攻略順">16. 降臨ステージ攻略順</a><ul>
+<li><a href="#161-開催スケジュールの仕組み">16.1 開催スケジュールの仕組み</a></li>
+<li><a href="#162-おすすめ攻略順">16.2 おすすめ攻略順</a></li>
+</ul>
+</li>
+<li><a href="#17-ネコ道場にゃんこ塔">17. ネコ道場・にゃんこ塔</a><ul>
+<li><a href="#171-ネコ道場">17.1 ネコ道場</a></li>
+<li><a href="#172-にゃんこ塔-異界にゃんこ塔">17.2 にゃんこ塔 / 異界にゃんこ塔</a></li>
+<li><a href="#173-にゃんこ道検定">17.3 にゃんこ道検定</a></li>
+</ul>
+</li>
+<li><a href="#18-強敵カタログと対策">18. 強敵カタログと対策</a><ul>
+<li><a href="#231-最強クラスの敵-top5">23.1 最強クラスの敵 TOP5</a></li>
+<li><a href="#232-属性別の代表的な強敵と対策">23.2 属性別の代表的な強敵と対策</a></li>
+<li><a href="#233-絶対に忘れてはいけない3原則">23.3 絶対に忘れてはいけない3原則</a></li>
+</ul>
+</li>
+<li><a href="#19-編成理論">19. 編成理論</a><ul>
+<li><a href="#191-基本テンプレート10枠">19.1 基本テンプレート（10枠）</a></li>
+<li><a href="#192-高難度真レジェンド序盤のテンプレート">19.2 高難度（真レジェンド序盤〜）のテンプレート</a></li>
+<li><a href="#193-役割ごとの選定基準">19.3 役割ごとの選定基準</a></li>
+<li><a href="#194-属性別編成13パターン">19.4 属性別編成（13パターン）</a></li>
+<li><a href="#195-編成を組む手順実践フロー">19.5 編成を組む手順（実践フロー）</a></li>
+</ul>
+</li>
+<li><a href="#20-実戦テクニック集">20. 実戦テクニック集</a><ul>
+<li><a href="#201-資金管理">20.1 資金管理</a></li>
+<li><a href="#202-前線管理">20.2 前線管理</a></li>
+<li><a href="#203-kbノックバック管理">20.3 KB（ノックバック）管理</a></li>
+<li><a href="#204-射程管理アウトレンジ">20.4 射程管理（アウトレンジ）</a></li>
+<li><a href="#205-ボス戦の定石">20.5 ボス戦の定石</a></li>
+<li><a href="#206-アイテムの使いどころ">20.6 アイテムの使いどころ</a></li>
+</ul>
+</li>
+<li><a href="#21-アイテム完全一覧">21. アイテム完全一覧</a><ul>
+<li><a href="#211-バトルアイテム出撃前に選択">21.1 バトルアイテム（出撃前に選択）</a></li>
+<li><a href="#212-統率力回復系">21.2 統率力・回復系</a></li>
+<li><a href="#213-育成素材">21.3 育成素材</a></li>
+<li><a href="#214-ガチャ関連">21.4 ガチャ関連</a></li>
+</ul>
+</li>
+<li><a href="#22-ユーザーランク">22. ユーザーランク</a><ul>
+<li><a href="#221-仕組み">22.1 仕組み</a></li>
+<li><a href="#222-主要な到達報酬">22.2 主要な到達報酬</a></li>
+<li><a href="#223-効率的な上げ方">22.3 効率的な上げ方</a></li>
+</ul>
+</li>
+<li><a href="#23-稼ぎxp素材ネコカン">23. 稼ぎ（XP・素材・ネコカン）</a><ul>
+<li><a href="#231-xp経験値稼ぎ">23.1 XP（経験値）稼ぎ</a></li>
+<li><a href="#232-xp効率を上げる要素">23.2 XP効率を上げる要素</a></li>
+<li><a href="#233-マタタビ稼ぎ">23.3 マタタビ稼ぎ</a></li>
+<li><a href="#234-本能玉稼ぎ">23.4 本能玉稼ぎ</a></li>
+<li><a href="#235-ネコカン課金石">23.5 ネコカン（課金石）</a></li>
+</ul>
+</li>
+<li><a href="#24-無課金おすすめキャラ役割別">24. 無課金おすすめキャラ（役割別）</a><ul>
+<li><a href="#壁役">壁役</a></li>
+<li><a href="#妨害役">妨害役</a></li>
+<li><a href="#アタッカー">アタッカー</a></li>
+<li><a href="#量産アタッカー">量産アタッカー</a></li>
+</ul>
+</li>
+<li><a href="#25-最強キャラランキング2026年時点">25. 最強キャラランキング（2026年時点）</a><ul>
+<li><a href="#評価基準の内訳">評価基準の内訳</a></li>
+<li><a href="#top30">TOP30</a></li>
+<li><a href="#読み解き方">読み解き方</a></li>
+</ul>
+</li>
+<li><a href="#26-詰まりポイント別-処方箋">26. 詰まりポイント別 処方箋</a></li>
+<li><a href="#27-用語集">27. 用語集</a></li>
+<li><a href="#28-出典">28. 出典</a></li>
+</ul>
+</div>
+
+  </nav>
+  <main>
+<blockquote>
+<p>作成日: 2026-07-28 / 想定バージョン: <strong>Ver.15.5.1</strong>（2026年7月21日配信）</p>
+<p><strong>注意</strong>: 本作は倍率・確率の多くが公式非公開です。攻略サイト・データマイニング由来の「有志推定値」には ⚠️ を付けています。正確な値はゲーム内表記とお宝の収集状況に依存します。</p>
+</blockquote>
+<hr />
+<h2 id="1-ゲームの全体像">1. ゲームの全体像</h2>
+<p><strong>にゃんこ大戦争</strong>（The Battle Cats / 開発・運営: ポノス株式会社）は、左右に伸びた1レーンの戦場で、自城からネコを出撃させて敵城を破壊するタワーディフェンス系ストラテジー。</p>
+<h3 id="核心となる3つのループ">核心となる3つのループ</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ループ</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>バトルループ</strong></td>
+<td>お金を貯める → 適切なキャラを適切なタイミングで出す → 敵城を割る</td>
+</tr>
+<tr>
+<td><strong>育成ループ</strong></td>
+<td>XP・素材を稼ぐ → レベル/形態/本能を上げる → より難しいステージへ</td>
+</tr>
+<tr>
+<td><strong>戦力拡張ループ</strong></td>
+<td>ガチャ・イベントで属性対策キャラを揃える → 対応できるステージが増える</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="本作の勝ち筋の本質">本作の勝ち筋の本質</h3>
+<p><strong>「敵の射程外から、有利属性の特性で殴り、壁で時間を買う」</strong>——この一文に集約される。
+火力よりも先に、<strong>射程差・属性相性・妨害（止める/遅くする）</strong>を理解することが上達の最短ルート。</p>
+<hr />
+<h2 id="2-バトルの根幹システム">2. バトルの根幹システム</h2>
+<h3 id="21-バトルの流れ">2.1 バトルの流れ</h3>
+<ol>
+<li><strong>序盤（0〜30秒）</strong>: 安価な壁キャラ（ネコ、タンクネコ、ゴムネコ等）を出して敵を足止めしつつ、働きネコレベルを上げる</li>
+<li><strong>中盤</strong>: 低〜中コストのアタッカーで前線を維持し、お金を貯める</li>
+<li><strong>終盤（ボス出現後）</strong>: 貯めた資金を主力アタッカーに全投入。壁を全力生産して守りながら殴り切る</li>
+</ol>
+<h3 id="22-お金所持金システム">2.2 お金（所持金）システム</h3>
+<ul>
+<li>敵を倒す／時間経過（働きネコ）で増加</li>
+<li><strong>働きネコ</strong>: 画面下部でレベルアップ可能。レベルを上げるほど毎秒の収入と<strong>お財布上限</strong>が増える</li>
+<li><strong>お財布上限（所持金上限）</strong>は働きネコレベルで決まる。高コストキャラを出すには先に財布を育てる必要がある</li>
+</ul>
+<blockquote>
+<p><strong>重要な初心者の落とし穴</strong>: 所持金を全額使い切ると、壁が切れて一気に押し込まれる。<strong>常に壁1体分の余力を残す</strong>のが鉄則。</p>
+</blockquote>
+<h3 id="23-城自城敵城">2.3 城（自城・敵城）</h3>
+<ul>
+<li>自城のHPが0になると敗北</li>
+<li>敵城を攻撃するとボス出現（多くのステージで敵城HPが一定量削れた瞬間に強敵が湧く）</li>
+<li><strong>敵城の残りHPが減ると敵の湧きパターンが変わる</strong>ステージが多い（"城を叩く＝スイッチを押す"）</li>
+</ul>
+<h3 id="24-出撃コストと再生産">2.4 出撃コストと再生産</h3>
+<ul>
+<li>各キャラに<strong>出撃コスト</strong>と<strong>再生産時間</strong>（クールダウン）がある</li>
+<li>壁キャラは「安い・再生産が速い」ことが価値。<strong>ゴムネコ（第3形態）の再生産の速さ</strong>が壁性能の基準になる</li>
+<li>高コストの主力（ネコムート、超激レア）は再生産が長く、死なせると穴が空く</li>
+</ul>
+<h3 id="25-にゃんこ砲">2.5 にゃんこ砲</h3>
+<ul>
+<li>バトル中にチャージが溜まると発射できる自城の砲台</li>
+<li><strong>序盤に無駄撃ちしない</strong>。ボス出現直後・敵の大群が押し寄せた瞬間に使うのが基本</li>
+<li>詳細は<a href="#10-にゃんこ砲基地改造オトート開発隊">第10章</a></li>
+</ul>
+<h3 id="26-統率力スタミナ">2.6 統率力・スタミナ</h3>
+<ul>
+<li>ステージ挑戦には<strong>統率力</strong>を消費。時間回復のほか、広告視聴で1日1回無料回復が可能</li>
+<li>統率力の最大値は「パワーアップ」の統率力項目で拡張</li>
+</ul>
+<hr />
+<h2 id="3-ステータスの読み方上級者の共通言語">3. ステータスの読み方（上級者の共通言語）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>項目</th>
+<th>意味と実戦での効き方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>体力（HP）</strong></td>
+<td>壁役の生命線。「打たれ強い」「めっぽう強い」と掛け算で実効HPが決まる</td>
+</tr>
+<tr>
+<td><strong>攻撃力</strong></td>
+<td>単発の火力。<strong>表記は総合値</strong>で、多段攻撃キャラは内訳が分かれる</td>
+</tr>
+<tr>
+<td><strong>DPS</strong></td>
+<td>攻撃力 ÷ 攻撃頻度（秒）。<strong>継続火力の指標</strong>。ボス削りの速度を決める</td>
+</tr>
+<tr>
+<td><strong>射程</strong></td>
+<td>最重要ステータス。<strong>敵より射程が長ければ一方的に殴れる</strong>（アウトレンジ）</td>
+</tr>
+<tr>
+<td><strong>攻撃頻度</strong></td>
+<td>次の攻撃までの間隔。短いほど雑魚処理・妨害の再発動が速い</td>
+</tr>
+<tr>
+<td><strong>攻撃発生（F）</strong></td>
+<td>攻撃モーションを開始してから実際に判定が出るまでのフレーム数。<strong>長いと敵にすり抜けられる／妨害を撃つ前に殴られる</strong></td>
+</tr>
+<tr>
+<td><strong>KB（ノックバック）数</strong></td>
+<td>何回吹き飛ばされたら後退するか。壁は多いほど粘る／アタッカーは少ないと下がりやすい</td>
+</tr>
+<tr>
+<td><strong>速度</strong></td>
+<td>前線への到達速度。速すぎると壁より前に出て被弾する。<strong>敵感知時に最大29Fのめり込み</strong>が発生し得る</td>
+</tr>
+<tr>
+<td><strong>コスト</strong></td>
+<td>出撃に必要なお金</td>
+</tr>
+<tr>
+<td><strong>再生産</strong></td>
+<td>次に出せるまでの時間。壁は短く、主力は長い</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="31-実戦で見るべき複合指標">3.1 実戦で見るべき複合指標</h3>
+<ul>
+<li><strong>DPS × 射程</strong>: 高難度でのアタッカー評価はほぼこれで決まる</li>
+<li><strong>HP × 被ダメ軽減特性</strong>: 壁の「実効耐久」。打たれ強い持ちは表記HPの4〜5倍相当 ⚠️</li>
+<li><strong>攻撃頻度 × 妨害確率</strong>: 妨害役の「拘束率」。頻度が短いほど止め続けられる</li>
+</ul>
+<h3 id="32-攻撃タイプ">3.2 攻撃タイプ</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>タイプ</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>単体攻撃</strong></td>
+<td>最前の1体のみ</td>
+</tr>
+<tr>
+<td><strong>範囲攻撃</strong></td>
+<td>射程内の敵をまとめて攻撃。量産の敵に強い</td>
+</tr>
+<tr>
+<td><strong>遠方攻撃</strong></td>
+<td>「〇〇〜〇〇の範囲」のみ攻撃。近くの敵には当たらない → <strong>壁が必須</strong></td>
+</tr>
+<tr>
+<td><strong>全方位攻撃</strong></td>
+<td>前後どちらにも攻撃可能。後ろに抜けた敵にも当たる</td>
+</tr>
+<tr>
+<td><strong>連続攻撃（多段）</strong></td>
+<td>1回の攻撃で複数回判定。攻撃力ダウン・妨害の付与機会が増える</td>
+</tr>
+<tr>
+<td><strong>波動 / 烈波 / 爆波</strong></td>
+<td>本体の攻撃とは別に飛ぶ追加判定（後述）</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="4-属性トレイト完全解説">4. 属性（トレイト）完全解説</h2>
+<p>敵キャラには<strong>属性</strong>が設定され、味方の「〇〇に強い/超ダメージ」系特性が乗るかどうかを決める。<strong>属性理解＝攻略の8割</strong>。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>特徴</th>
+<th>代表的な敵</th>
+<th>基本対策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>白い敵（無属性）</strong></td>
+<td>属性を持たない。特攻が乗らない</td>
+<td>わんこ、にょろ、ゴリさん、ジャッキー・ペン</td>
+<td>特性に依存しない<strong>素の高火力</strong>が必要</td>
+</tr>
+<tr>
+<td><strong>赤い敵</strong></td>
+<td>序盤から登場。HP・攻撃力が高め</td>
+<td>ブタヤロウ、ゴマさま、ウサ銀、一角くん、悪の帝王ニャンダム</td>
+<td>「赤い敵に強い/超ダメージ」持ち＋厚い壁</td>
+</tr>
+<tr>
+<td><strong>浮いてる敵</strong></td>
+<td>地上に接さず特殊な移動。長射程が多い</td>
+<td>カオル君、ぶんぶん先生、ガガガガ</td>
+<td>「浮いてる敵にめっぽう強い」＋妨害で制圧</td>
+</tr>
+<tr>
+<td><strong>黒い敵</strong></td>
+<td>移動が速く連続攻撃持ちが多い。上級者向け</td>
+<td>殺意のわんこ、シャドウボクサー、ブラッコ、ウルトラメェメェ</td>
+<td>「黒い敵に打たれ強い」壁＋停止/遅くする</td>
+</tr>
+<tr>
+<td><strong>メタルな敵</strong></td>
+<td><strong>通常攻撃は常に1ダメージ固定</strong>。妨害もほぼ無効</td>
+<td>メタルカバちゃん、メタルサイクロン、メタルカオル君</td>
+<td><strong>クリティカル</strong>必須。水鉄砲（割合ダメージ）も有効</td>
+</tr>
+<tr>
+<td><strong>天使</strong></td>
+<td>攻撃力・妨害能力に優れる。中盤以降の壁役</td>
+<td>天使ガブリエル、天使スレイプニール、断罪天使クオリネル</td>
+<td>「天使に超ダメージ」＋停止</td>
+</tr>
+<tr>
+<td><strong>エイリアン</strong></td>
+<td>未来編以降。<strong>バリア</strong>・ワープなど特殊能力</td>
+<td>エイリワン、カーバチャン、ヤドカリー、イノヴァルカン</td>
+<td><strong>バリアブレイカー</strong>必須。ワープ無効も有効。未来編お宝で弱体化</td>
+</tr>
+<tr>
+<td><strong>ゾンビ</strong></td>
+<td>撃破後に<strong>地中から復活</strong>する</td>
+<td>ゾンビワン、ゾンビゴリラ、チキランラン、亡者デブウ</td>
+<td><strong>ゾンビキラー</strong>必須（復活を封じる）</td>
+</tr>
+<tr>
+<td><strong>古代種</strong></td>
+<td><strong>「古代の呪い」</strong>で味方の特性発動を阻害</td>
+<td>古代わんこ、ヘルゴリラー、シノシシ、ネコ仙人、エンシェントサイクロン</td>
+<td><strong>呪い無効</strong>＋「古代種に超ダメージ」</td>
+</tr>
+<tr>
+<td><strong>悪魔</strong></td>
+<td><strong>悪魔シールド</strong>・呪い・複数攻撃など複合的</td>
+<td>ダークドリル、ギルティペン、ベリアル</td>
+<td><strong>悪魔シールドブレイカー</strong>＋呪い無効</td>
+</tr>
+<tr>
+<td><strong>超生命体</strong></td>
+<td>高難度カテゴリ。専用特効が必要</td>
+<td>超生命体系ボス</td>
+<td>「超生命体特効」</td>
+</tr>
+<tr>
+<td><strong>超獣</strong></td>
+<td>高難度カテゴリ</td>
+<td>超獣系ボス</td>
+<td>「超獣特効」</td>
+</tr>
+<tr>
+<td><strong>超賢者</strong></td>
+<td>Ver.12.0以降。<strong>妨害効果を大幅カット</strong></td>
+<td>レジェンドストーリー0の超賢者系</td>
+<td>「超賢者特効」。通常の妨害役が機能しない</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="41-属性は重複する">4.1 属性は重複する</h3>
+<p>1体の敵が「エイリアン かつ 浮いてる敵」のように複数属性を持つことがある。この場合、<strong>どちらの特攻も乗る</strong>ため、対策キャラの選択肢が広がる。</p>
+<h3 id="42-特に事故が起きやすい3属性">4.2 特に事故が起きやすい3属性</h3>
+<ol>
+<li><strong>メタル</strong> — 火力キャラを何体並べても1ダメージ。クリティカル持ちを入れ忘れると詰み</li>
+<li><strong>ゾンビ</strong> — 倒したつもりが復活して自城裏に出る。ゾンビキラー不在は敗北直結</li>
+<li><strong>古代種</strong> — 停止・遅くする・ふっとばしが全部通らない。妨害編成が丸ごと死ぬ</li>
+</ol>
+<hr />
+<h2 id="5-特性能力-完全リファレンス">5. 特性・能力 完全リファレンス</h2>
+<blockquote>
+<p>倍率はお宝の収集状況で変動する。以下は<strong>お宝なし〜フル取得</strong>のレンジ表記 ⚠️</p>
+</blockquote>
+<h3 id="51-攻撃防御倍率系">5.1 攻撃・防御倍率系</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>〇〇にめっぽう強い</strong></td>
+<td>与ダメージ <strong>約1.5倍</strong>／被ダメージ <strong>約1/2</strong></td>
+</tr>
+<tr>
+<td><strong>〇〇に超ダメージ</strong></td>
+<td>与ダメージ <strong>約3〜4倍</strong>（お宝で最大4倍まで上昇）</td>
+</tr>
+<tr>
+<td><strong>〇〇に極ダメージ</strong></td>
+<td>与ダメージ <strong>約5〜6倍</strong></td>
+</tr>
+<tr>
+<td><strong>〇〇に打たれ強い</strong></td>
+<td>被ダメージ <strong>約1/4〜1/5</strong></td>
+</tr>
+<tr>
+<td><strong>〇〇に超打たれ強い</strong></td>
+<td>被ダメージ <strong>約1/6〜1/7</strong></td>
+</tr>
+<tr>
+<td><strong>クリティカル</strong></td>
+<td>通常攻撃の<strong>2倍</strong>ダメージ。<strong>メタルな敵の防御を無視</strong>（メタル攻略の必須要素）</td>
+</tr>
+<tr>
+<td><strong>渾身の一撃</strong></td>
+<td>通常攻撃の<strong>3倍</strong>ダメージ</td>
+</tr>
+<tr>
+<td><strong>城破壊</strong></td>
+<td>敵城へのダメージ<strong>4倍</strong></td>
+</tr>
+<tr>
+<td><strong>撃破時お金アップ</strong></td>
+<td>撃破時の獲得金額<strong>2倍</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="52-カテゴリ特効高難度カテゴリ専用">5.2 カテゴリ特効（高難度カテゴリ専用）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>超生命体特効</strong></td>
+<td>攻撃<strong>1.6倍</strong> / 被ダメージ<strong>0.7倍</strong></td>
+</tr>
+<tr>
+<td><strong>超獣特効</strong></td>
+<td>攻撃<strong>2.5倍</strong> / 被ダメージ<strong>0.6倍</strong></td>
+</tr>
+<tr>
+<td><strong>超賢者特効</strong></td>
+<td>攻撃<strong>1.2倍</strong> / 被ダメージ<strong>0.5倍</strong> / <strong>敵から受ける妨害効果7割減</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="53-妨害系">5.3 妨害系</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ふっとばす</strong></td>
+<td>敵を強制的にノックバックさせて後退させる。前線を押し戻す最強の時間稼ぎ</td>
+</tr>
+<tr>
+<td><strong>動きを止める</strong></td>
+<td>一定時間、敵を完全停止。<strong>最も強力な妨害</strong></td>
+</tr>
+<tr>
+<td><strong>動きを遅くする</strong></td>
+<td>一定時間、敵の移動・攻撃速度を低下</td>
+</tr>
+<tr>
+<td><strong>攻撃力ダウン</strong></td>
+<td>一定時間、敵の攻撃力を大幅低下（壁の生存に直結）</td>
+</tr>
+<tr>
+<td><strong>呪い</strong></td>
+<td>敵の<strong>特性を無効化</strong>（バリア・シールド・特攻などを封じる）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="54-追加判定系範囲攻撃の拡張">5.4 追加判定系（範囲攻撃の拡張）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>波動</strong></td>
+<td>攻撃時に地上を走る衝撃波を発生。後方の敵にもダメージ</td>
+</tr>
+<tr>
+<td><strong>小波動（ミニ波動）</strong></td>
+<td>波動の弱体版（射程が短い）</td>
+</tr>
+<tr>
+<td><strong>烈波</strong></td>
+<td>前方に瞬間発生する広範囲判定。波動より速く当たる</td>
+</tr>
+<tr>
+<td><strong>小烈波</strong></td>
+<td>烈波の弱体版</td>
+</tr>
+<tr>
+<td><strong>爆波</strong></td>
+<td>指定距離に爆発を発生させる新しい追加判定（Ver.15系で採用拡大）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="55-防御貫通特殊系">5.5 防御貫通・特殊系</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>バリアブレイカー</strong></td>
+<td>エイリアンの<strong>バリア</strong>を破壊できる。エイリアン高難度では必須</td>
+</tr>
+<tr>
+<td><strong>シールドブレイカー</strong></td>
+<td>「シールド」持ち敵のシールドを削る</td>
+</tr>
+<tr>
+<td><strong>悪魔シールドブレイカー</strong></td>
+<td>悪魔の<strong>悪魔シールド</strong>を破壊</td>
+</tr>
+<tr>
+<td><strong>ゾンビキラー</strong></td>
+<td>ゾンビの<strong>復活を阻止</strong>して完全に撃破</td>
+</tr>
+<tr>
+<td><strong>魂攻撃</strong></td>
+<td>撃破された敵の「魂（死亡演出中の当たり判定）」にも攻撃できる</td>
+</tr>
+<tr>
+<td><strong>生き残る</strong></td>
+<td>致死ダメージを受けてもHP1で生存（確率発動／確定持ちも存在）</td>
+</tr>
+<tr>
+<td><strong>メタル</strong></td>
+<td>味方側のメタル属性。<strong>クリティカル以外のダメージは1固定</strong>で受ける超耐久</td>
+</tr>
+<tr>
+<td><strong>波動ストッパー</strong></td>
+<td>敵の波動を無効化</td>
+</tr>
+<tr>
+<td><strong>烈波カウンター</strong></td>
+<td>敵の烈波に反応して烈波を撃ち返す</td>
+</tr>
+<tr>
+<td><strong>各種無効</strong></td>
+<td>停止無効・遅くする無効・ふっとばし無効・攻撃力ダウン無効・呪い無効・波動ダメージ無効・烈波ダメージ無効・爆波ダメージ無効・毒撃無効・ワープ無効 など</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="56-敵専用の能力味方は持たない">5.6 敵専用の能力（味方は持たない）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ワープ</strong></td>
+<td>味方キャラを強制的に後方（自城側）へ転送</td>
+</tr>
+<tr>
+<td><strong>毒撃</strong></td>
+<td>割合ダメージ。HPの高い壁ほど痛い</td>
+</tr>
+<tr>
+<td><strong>バリア</strong></td>
+<td>一定値以下のダメージを完全カット。バリブレか一撃でバリア値超えが必要</td>
+</tr>
+<tr>
+<td><strong>シールド / 悪魔シールド</strong></td>
+<td>一定量削るまでダメージが通らない</td>
+</tr>
+<tr>
+<td><strong>蘇生</strong></td>
+<td>撃破後に復活</td>
+</tr>
+<tr>
+<td><strong>地中移動</strong></td>
+<td>地面を潜って移動し、攻撃が当たらない</td>
+</tr>
+<tr>
+<td><strong>古代の呪い</strong></td>
+<td>味方の<strong>妨害・特性の発動を封じる</strong>（古代種の代名詞）</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="6-妨害の発動確率表記">6. 妨害の発動確率表記</h2>
+<p>ゲーム内の日本語表現と実際の発動率の対応 ⚠️（有志推定）:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>表記</th>
+<th>発動率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>奇跡的に</strong></td>
+<td>約 <strong>1%</strong></td>
+</tr>
+<tr>
+<td><strong>ごくまれに</strong></td>
+<td>約 <strong>2〜9%</strong></td>
+</tr>
+<tr>
+<td><strong>まれに</strong></td>
+<td>約 <strong>10〜29%</strong></td>
+</tr>
+<tr>
+<td><strong>たまに</strong></td>
+<td>約 <strong>30〜99%</strong></td>
+</tr>
+<tr>
+<td><strong>必ず</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>実戦上の指針</strong>: 「たまに」は数値幅が広すぎて信用しにくい。高難度では<strong>「必ず」＝確定妨害</strong>を持つキャラ（確定停止・確定鈍足）が圧倒的に評価が高いのはこのため。</p>
+</blockquote>
+<hr />
+<h2 id="7-育成システム全体像">7. 育成システム全体像</h2>
+<h3 id="71-レベルlvと-値">7.1 レベル（Lv）と +値</h3>
+<ul>
+<li><strong>Lv上限解放</strong>が段階的に存在。Lv.30 → Lv.50 でステータスは<strong>約1.6〜2倍</strong>まで伸びる</li>
+<li><strong>+値</strong>（プラス）は同キャラを重ねて獲得。Lv.30以降の上乗せ枠</li>
+<li><strong>レア度別の伸び率</strong> ⚠️:</li>
+<li>レア: Lv.50→60 で約 <strong>+37%</strong>、Lv.70→90 で <strong>+13.5%</strong></li>
+<li>激レア・超激レア: Lv.50→60 で <strong>+18.5%</strong>、以降は伸びが鈍化</li>
+<li><strong>現実的な目標</strong>: レア＝Lv.90、激レア/超激レア＝Lv.60 を目指す</li>
+</ul>
+<h3 id="72-進化形態">7.2 進化（形態）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>形態</th>
+<th>解放条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第1形態</strong></td>
+<td>初期</td>
+</tr>
+<tr>
+<td><strong>第2形態</strong></td>
+<td>Lv.10（多くのキャラ）</td>
+</tr>
+<tr>
+<td><strong>第3形態</strong></td>
+<td>該当レベル到達 + <strong>マタタビ</strong>（属性別素材）+ XP</td>
+</tr>
+<tr>
+<td><strong>第4形態</strong></td>
+<td><strong>Lv.60</strong> + キャラ別の専用素材（マタタビ・獣石/獣結晶など）+ <strong>XP 200万</strong></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>第4形態</strong>は一部キャラのみ実装。ステータス強化に加え<strong>特性の追加・変更</strong>が入り、性能が別物になることが多い</li>
+<li>例（Ver.15系）: かさじぞう（全方位攻撃＋確定生き残り）、成田甲斐（爆波＋超賢者特効）、グランドン（毒撃無効＋古代種特効）、ネコクエスト（爆波＋波動ダメージ無効）</li>
+</ul>
+<h3 id="73-マタタビ">7.3 マタタビ</h3>
+<ul>
+<li><strong>基本5色</strong>（緑・紫・赤・青・黄）＋ <strong>特殊3種</strong>（虹・古代・ゴールド）</li>
+<li>各々「マタタビ」と「マタタビの種」があり、<strong>種5個 → マタタビ1個</strong>に交換</li>
+<li>入手: 曜日別マタタビステージ、にゃんこ神社（XP 100万奉納で約1%、<strong>30回で確定</strong> ⚠️）、異界にゃんこ塔40階クリア報酬など</li>
+</ul>
+<h3 id="74-本能np消費">7.4 本能（NP消費）</h3>
+<ul>
+<li>対象キャラの潜在能力を解放するシステム。<strong>NP（にゃんこポイント）</strong>を消費</li>
+<li>効果: 体力UP・攻撃力UPが基本。加えて<strong>新特性の追加</strong>（無効系・妨害・特攻など）</li>
+<li>NPの入手: 不要キャラを「にゃんこ全書」で変換、イベント報酬など</li>
+</ul>
+<h3 id="75-超本能">7.5 超本能</h3>
+<ul>
+<li><strong>解放条件: キャラのLv.60到達</strong>（キャッツアイ闇を15個使うのが基本ルート。+値の積み上げでも可）</li>
+<li>Lv.60到達後、<strong>NPを消費</strong>して解放</li>
+<li><strong>通常の本能を解放していなくても超本能は解放できる</strong></li>
+<li>優先度（例）: <strong>S = 滅殺ハヤブサ、召し猪のカイμ</strong> / <strong>A = 金猿帝のクウγ、Gパーフェクトアヌビス</strong> / <strong>B = 竜宮の人魚姫ルリィ、インフェルノ・アキラ</strong></li>
+<li>⚠️ 攻略サイトの評価としては「<strong>無理に全解放する必要はない</strong>」（コストに見合うキャラが限られる）</li>
+</ul>
+<h3 id="76-本能玉オーブ">7.6 本能玉（オーブ）</h3>
+<p>本能解放済みキャラに装着する強化パーツ。</p>
+<p><strong>効果系</strong>
+- <strong>ダメージアップ玉</strong>: 対応属性への攻撃力増加。<strong>敵の妨害・特性の影響を受けない</strong>
+- <strong>ダメージ軽減玉</strong>: 対応属性から受けるダメージを軽減。<strong>全キャラ装着可能で最も汎用性が高い</strong>
+- <strong>超ダメージ玉 / めっぽう強い玉 / 打たれ強い玉</strong>: 対応する特性の倍率を上昇（<strong>その特性を持つキャラのみ装着可</strong>）</p>
+<p><strong>能力系</strong>
+- 撃破時攻撃力アップ、初回撃破時お金アップ、デス小烈波、1回烈波カウンター、レジェンドストーリー強化 など</p>
+<p><strong>耐性系</strong>
+- 攻撃力ダウン耐性、波動ダメージ耐性 など</p>
+<p><strong>ランクと合成</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ランク</th>
+<th>位置</th>
+<th>合成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong></td>
+<td>最高</td>
+<td>A×3</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>2位</td>
+<td>B×3</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>3位</td>
+<td>C×2</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>4位</td>
+<td>D×2</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>最低</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入手先</strong>: 発掘ステージ（統率力100・地図ドロップから挑戦）、ゲリラ「秘宝の眠る孤島」（Bランクまで）、超生命体強襲EXステージ（高ランクが出やすい）、極ランキングの間の「ふしぎな宝箱」（特殊玉）</p>
+<p><strong>装着方針</strong>
+1. 迷ったら<strong>ダメージ軽減玉</strong>（全キャラ対応・腐らない）
+2. <strong>打たれ強い持ちの壁</strong> → 打たれ強い玉で実効耐久を跳ね上げる
+3. <strong>属性特化アタッカー</strong> → 超ダメージ玉／めっぽう強い玉
+4. <strong>玉2個装着可能なキャラ</strong>（超本能実装済みの一部）を優先すると効率が良い</p>
+<hr />
+<h2 id="8-パワーアップ基本ステータス強化">8. パワーアップ（基本ステータス強化）</h2>
+<p>XPを消費して恒久強化する項目。<strong>キャラ育成より優先すべき場面が多い</strong>。</p>
+<h3 id="優先順位">優先順位</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>優先度</th>
+<th>項目</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>最優先</strong></td>
+<td><strong>働きネコ仕事効率</strong></td>
+<td>お金の増加スピード。全ステージの土台</td>
+</tr>
+<tr>
+<td><strong>最優先</strong></td>
+<td><strong>会計力</strong></td>
+<td>敵撃破時の獲得金額アップ</td>
+</tr>
+<tr>
+<td><strong>最優先</strong></td>
+<td><strong>研究力</strong></td>
+<td>キャラの再生産速度短縮。壁の切れ目を消す</td>
+</tr>
+<tr>
+<td><strong>優先</strong></td>
+<td><strong>働きネコお財布</strong></td>
+<td>所持金上限。高コスト主力を出すのに必須</td>
+</tr>
+<tr>
+<td><strong>優先</strong></td>
+<td><strong>勉強力</strong></td>
+<td>獲得XPアップ。<strong>Lv.20で約2倍、Lv.20+10で約2.5倍</strong>（永続効果）</td>
+</tr>
+<tr>
+<td><strong>優先</strong></td>
+<td><strong>統率力</strong></td>
+<td>挑戦回数＝周回効率</td>
+</tr>
+<tr>
+<td>低</td>
+<td><strong>お城体力</strong></td>
+<td>保険。ただし高難度では効いてくる</td>
+</tr>
+<tr>
+<td>低</td>
+<td><strong>にゃんこ砲（攻撃力・射程・チャージ）</strong></td>
+<td>序盤の伸びしろは小さい</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>日本編クリアの鍵</strong>は「働きネコ仕事効率」と「研究力」。キャラ強化より優先していいレベル。</p>
+</blockquote>
+<hr />
+<h2 id="9-お宝-完全解説">9. お宝 完全解説</h2>
+<p><strong>お宝は本作で最も費用対効果が高い強化要素</strong>。日本編・未来編・宇宙編の各ステージをクリアすると入手する。</p>
+<h3 id="91-仕組み最重要">9.1 仕組み（最重要）</h3>
+<ul>
+<li><strong>1地方（エリア）のお宝をすべて集めると効果が発動</strong>する</li>
+<li>品質は <strong>粗悪（銅）&lt; 普通（銀）&lt; 最高（金）</strong> の3段階</li>
+<li><strong>各章に同名のお宝が存在し、1章あたり100%、第1〜3章で合計300%まで加算</strong>される</li>
+<li>例: 「100%につき攻撃力+50%」のお宝なら、<strong>300%到達で攻撃力+150%</strong></li>
+<li>集めたお宝の効果は、<strong>その章だけでなく全ステージ（レジェンド・イベント含む）に恒久適用</strong>される</li>
+<li>通常時のお宝ドロップ率は <strong>約8〜13%</strong> ⚠️</li>
+</ul>
+<blockquote>
+<p><strong>つまり</strong>: 日本編第1〜3章のお宝をすべて金にするだけで、全キャラの攻撃力+150%・体力+150%相当が得られる。<strong>これはキャラのレベルを何十も上げるより効果が大きい。</strong></p>
+</blockquote>
+<h3 id="92-日本編のお宝全12種">9.2 日本編のお宝（全12種）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>お宝</th>
+<th>効果（100%あたり）</th>
+<th>300%時</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>関東のカリスマ</strong></td>
+<td>攻撃力 <strong>+50%</strong></td>
+<td><strong>+150%</strong></td>
+</tr>
+<tr>
+<td><strong>甲信越の雪景色</strong></td>
+<td>体力 <strong>+50%</strong></td>
+<td><strong>+150%</strong></td>
+</tr>
+<tr>
+<td><strong>東海のがめつさ</strong></td>
+<td>敵撃破時の獲得金 <strong>+50%</strong></td>
+<td><strong>+150%</strong></td>
+</tr>
+<tr>
+<td><strong>九州の男らしさ</strong></td>
+<td>お金の生産量アップ</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>四国のうまいもん</strong></td>
+<td>財布容量 <strong>+1,000円</strong></td>
+<td><strong>+3,000円</strong></td>
+</tr>
+<tr>
+<td><strong>中国の伝統</strong></td>
+<td>キャラ再生産時間 <strong>-1秒</strong></td>
+<td><strong>-3秒</strong></td>
+</tr>
+<tr>
+<td><strong>北陸の豪邸</strong></td>
+<td>城体力 <strong>+7,000</strong></td>
+<td><strong>+21,000</strong></td>
+</tr>
+<tr>
+<td><strong>関西のノリ</strong></td>
+<td>獲得経験値 <strong>+50%</strong></td>
+<td><strong>+150%</strong></td>
+</tr>
+<tr>
+<td>（その他）</td>
+<td>東北・北海道・沖縄などの地方お宝</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>優先順位</strong>: 関東のカリスマ（攻撃力）＞ 甲信越の雪景色（体力）＞ 東海のがめつさ（お金）＞ 中国の伝統（再生産）＞ 関西のノリ（XP）</p>
+<h3 id="93-未来編のお宝全12種">9.3 未来編のお宝（全12種）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>系統</th>
+<th>お宝</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>クリスタル系</strong></td>
+<td>ブルークリスタル / レッドクリスタル ほか</td>
+<td><strong>スターなしエイリアンの強化倍率700%を、100%につき100%弱体化</strong></td>
+</tr>
+<tr>
+<td><strong>果実系</strong></td>
+<td>暗黒の果実</td>
+<td>黒い敵への特殊能力（特性）効果を強化</td>
+</tr>
+<tr>
+<td></td>
+<td>紅血の果実</td>
+<td>赤い敵への能力効果を強化</td>
+</tr>
+<tr>
+<td></td>
+<td>飛翔の果実</td>
+<td>浮いてる敵への能力効果を強化</td>
+</tr>
+<tr>
+<td></td>
+<td>天界の果実</td>
+<td>天使への能力効果を強化</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>クリスタル系が最優先</strong>。未取得だとエイリアンが<strong>7倍のステータス</strong>で襲ってくる。未来編・宇宙編で詰まる原因のほぼすべてがこれ。</p>
+</blockquote>
+<h3 id="94-宇宙編のお宝全13種">9.4 宇宙編のお宝（全13種）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>系統</th>
+<th>お宝</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>クリスタル系</strong></td>
+<td>グリーン / イエロー / オレンジ / ライトブルー / パープルクリスタル</td>
+<td><strong>スターありエイリアンの強化倍率1600%を、100%につき100%弱体化</strong></td>
+</tr>
+<tr>
+<td><strong>果実系</strong></td>
+<td>鋼鉄の果実</td>
+<td>メタルな敵への能力効果を強化</td>
+</tr>
+<tr>
+<td></td>
+<td>冥界の果実</td>
+<td>ゾンビへの能力効果を強化</td>
+</tr>
+<tr>
+<td></td>
+<td>異星の果実</td>
+<td>エイリアンへの能力効果を強化</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>「果実系」が<strong>超ダメージ3倍→4倍</strong>などの倍率アップの正体。高難度で火力が足りないと感じたら果実を疑う。</p>
+</blockquote>
+<h3 id="95-効率的な集め方">9.5 効率的な集め方</h3>
+<ol>
+<li><strong>統率力1/2イベント</strong>を待つ — 周回回数が実質2倍。<strong>高統率力のステージから優先的に</strong>周回する</li>
+<li><strong>トレジャーフェスティバル（トレフェス）</strong> — ドロップ率が<strong>2倍</strong>になる期間</li>
+<li><strong>トレジャーレーダー</strong> — <strong>100%の確率でお宝を獲得</strong>。統率力の高い難関ステージ・最後の1個に使う</li>
+<li>「粗悪→最高」の上書きは何度も周回して引き直す。<strong>最高（金）になるまで粘る</strong></li>
+</ol>
+<h3 id="96-実務ポイント">9.6 実務ポイント</h3>
+<ul>
+<li><strong>狂乱ステージの挑戦条件は「日本編のお宝を最高（金）にすること」</strong></li>
+<li>「詰まった＝お宝不足」であることが極めて多い。<strong>行き詰まったらまずお宝を金にする</strong></li>
+<li><strong>関西のノリ</strong>を先に埋めると以降のXP稼ぎが加速する（複利的に効く）</li>
+</ul>
+<hr />
+<h2 id="10-にゃんこ砲基地改造オトート開発隊">10. にゃんこ砲・基地改造（オトート開発隊）</h2>
+<p>にゃんこ砲は <strong>主砲 + 土台 + 装飾</strong> の3パーツ構成。編成画面またはオトート開発隊から付け替える。</p>
+<h3 id="主砲の種類と効果">主砲の種類と効果</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>主砲</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>にゃんこ砲（通常）</strong></td>
+<td>当たった敵全員を少し仰け反らせ、一定ダメージ</td>
+</tr>
+<tr>
+<td><strong>鉄壁砲</strong></td>
+<td>敵の最前線に<strong>メタル属性の鉄壁</strong>を召喚（物理的な足止め）</td>
+</tr>
+<tr>
+<td><strong>スロウ砲</strong></td>
+<td>「遅くする」妨害と同じ効果のビーム</td>
+</tr>
+<tr>
+<td><strong>かみなり砲</strong></td>
+<td>敵の動きを<strong>止める</strong>かみなりを落とす</td>
+</tr>
+<tr>
+<td><strong>水鉄砲</strong></td>
+<td><strong>メタルな敵に割合ダメージ</strong>（メタル対策の切り札）</td>
+</tr>
+<tr>
+<td><strong>エンジェル砲</strong></td>
+<td>ゾンビに割合ダメージ＋停止＋ふっとばし＋<strong>ゾンビキラー</strong>効果</td>
+</tr>
+<tr>
+<td><strong>キャノンブレイク砲</strong></td>
+<td>当たった敵をふっとばす＋<strong>バリアを確実に破壊</strong></td>
+</tr>
+<tr>
+<td><strong>呪い砲</strong></td>
+<td>フィールド全体に「呪い」の妨害効果</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="土台装飾">土台・装飾</h3>
+<ul>
+<li><strong>装飾</strong>: 特定の妨害効果の被効果時間を軽減</li>
+<li><strong>土台</strong>: 特定の敵種から受けるダメージを軽減</li>
+</ul>
+<h3 id="開発優先度">開発優先度</h3>
+<ul>
+<li><strong>最優先: かみなり砲・鉄壁砲</strong>（攻略・速攻・周回すべてで活躍）</li>
+<li>Ver.9.8以降、特殊効果を持つ砲の一部が、Ver.11.8以降はにゃんこ城強化が <strong>Lv.30まで拡張</strong></li>
+</ul>
+<h3 id="基地改造の素材">基地改造の素材</h3>
+<ul>
+<li>レジェンドストーリー0でドロップする<strong>「異次元の素材（Z素材）」</strong>が、にゃんこ砲の土台・装飾の改造に必要。<strong>現状ここでしか手に入らない</strong></li>
+</ul>
+<hr />
+<h2 id="11-にゃんコンボ">11. にゃんコンボ</h2>
+<p>編成の<strong>1段目（上段）</strong>に特定キャラを並べると、バトル開始時に追加効果が発動するシステム。</p>
+<h3 id="仕様">仕様</h3>
+<ul>
+<li><strong>スロット1段目に配置したときのみ発動</strong>。2段目では発動しない</li>
+<li><strong>進化後のキャラでも発動する</strong>（形態は問わない）</li>
+<li><strong>未来編のステージクリアで解放</strong></li>
+<li><strong>同じ効果のコンボは重複して累積強化される</strong></li>
+</ul>
+<h3 id="効果量の目安">効果量の目安</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>表記</th>
+<th>上昇値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>中</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>大</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>特大／究極</td>
+<td>それ以上</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="実用コンボ例">実用コンボ例</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>コンボ名</th>
+<th>効果</th>
+<th>必要キャラ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>とれたてピッチピチ</strong></td>
+<td>「打たれ強い」大（30%）</td>
+<td>人魚娘ルリィ、ネコフィッシュ ほか</td>
+</tr>
+<tr>
+<td><strong>進撃の狂乱ネコ</strong></td>
+<td>初期所持金 30%アップ</td>
+<td>狂乱のネコ系5体</td>
+</tr>
+<tr>
+<td><strong>振袖選手権</strong></td>
+<td>再生産速度 30%短縮</td>
+<td>狐娘ヒメユリ、うらめしにゃん</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="編成上の考え方">編成上の考え方</h3>
+<p>高難度では <strong>「攻撃力アップ」「初期所持金アップ」「研究力（再生産）」「働きネコお財布」</strong> 系のコンボが特に強い。
+<strong>上段5枠のうち2〜3枠をコンボ要員に割く</strong>のが定番の設計。</p>
+<hr />
+<h2 id="12-ガチャの仕様と立ち回り">12. ガチャの仕様と立ち回り</h2>
+<h3 id="121-排出確率">12.1 排出確率</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ガチャ種別</th>
+<th>伝説レア</th>
+<th>超激レア</th>
+<th>激レア</th>
+<th>レア</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>通常（伝説レアあり）</strong></td>
+<td>0.3%</td>
+<td>5%</td>
+<td>25%</td>
+<td>69.7%</td>
+</tr>
+<tr>
+<td><strong>超ネコ祭 / 極ネコ祭</strong></td>
+<td>0.3%程度</td>
+<td><strong>9〜10%</strong></td>
+<td>26%</td>
+<td>約64.7%</td>
+</tr>
+<tr>
+<td><strong>超極ネコ祭</strong></td>
+<td>—</td>
+<td><strong>9%</strong>（超ネコ祭・極ネコ祭の両限定キャラが対象）</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>女王祭</strong></td>
+<td><strong>0.6%</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>レジェンドガチャ</strong></td>
+<td><strong>5%</strong></td>
+<td>95%</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>プラチナガチャ</strong></td>
+<td>—</td>
+<td><strong>100%</strong></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="122-演出">12.2 演出</h3>
+<ul>
+<li><strong>青白い稲妻 + 金色の稲妻</strong> の両方が走る演出 = <strong>超激レア以上確定</strong></li>
+<li>通常は青白い稲妻のみ。ただし演出がなくても高レアが出ることはある</li>
+</ul>
+<h3 id="123-ガチャシリーズ別-評価">12.3 ガチャシリーズ別 評価</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ガチャ</th>
+<th>評価</th>
+<th>特徴・目玉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>超極ネコ祭</strong></td>
+<td><strong>SS</strong></td>
+<td>超極限定＋全恒常キャラが集結。<strong>全ガチャ中で超激レア排出率が最も高い（9%）</strong>。年始・GWに登場</td>
+</tr>
+<tr>
+<td><strong>超ネコ祭</strong></td>
+<td><strong>S</strong></td>
+<td>毎月頭。超激レア9〜10%、限定キャラが豊富</td>
+</tr>
+<tr>
+<td><strong>極ネコ祭</strong></td>
+<td><strong>S</strong></td>
+<td>毎月半ば。超激レア9〜10%</td>
+</tr>
+<tr>
+<td><strong>超激ダイナマイツ</strong></td>
+<td><strong>S</strong></td>
+<td>最前線環境の強キャラが豊富。<strong>第3形態＋本能で化けるキャラが多く中級者以上に最適</strong>。鬼にゃんま、ネコアイス、召喚少年サトル、ネコベビー、ネコマシン、ラスヴォーズ、ワンダーモモコ</td>
+</tr>
+<tr>
+<td><strong>ウルトラソウルズ</strong></td>
+<td><strong>S</strong></td>
+<td>小型・大型の使い分けが可能。初心者向け</td>
+</tr>
+<tr>
+<td><strong>ギガントゼウス</strong></td>
+<td><strong>S</strong></td>
+<td>第2形態時点で優秀。<strong>初心者に特に推奨</strong></td>
+</tr>
+<tr>
+<td><strong>波動バスターズ</strong></td>
+<td><strong>S</strong></td>
+<td>波動対策特化</td>
+</tr>
+<tr>
+<td><strong>ダークヒーローズ</strong></td>
+<td><strong>B</strong></td>
+<td>中堅。形態チェンジで役割を切り替えられる。亡者探偵ヴィグラー、アキラ、超越科学者ヘヴン博士、呪術師デスピエロ、天誅ハヤブサ</td>
+</tr>
+<tr>
+<td><strong>エアバスターズ</strong></td>
+<td><strong>B</strong></td>
+<td>浮いてる敵対策</td>
+</tr>
+<tr>
+<td><strong>レッドバスターズ</strong></td>
+<td><strong>B</strong></td>
+<td>赤い敵対策</td>
+</tr>
+<tr>
+<td><strong>超生命体バスターズ</strong></td>
+<td><strong>B</strong></td>
+<td>超生命体対策</td>
+</tr>
+<tr>
+<td><strong>メタルバスターズ</strong></td>
+<td><strong>C</strong></td>
+<td>メタル対策（クリティカル要員）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>初心者の指針</strong>: ギガントゼウス／ウルトラソウルズ（第2形態で戦力になる）→ 中級者以降は超激ダイナマイツ（育成前提で最強格）。</p>
+</blockquote>
+<h3 id="124-引くタイミングの戦略">12.4 引くタイミングの戦略</h3>
+<ol>
+<li><strong>超ネコ祭（月初）／極ネコ祭（月半ば）を最優先</strong>。超激レア率が5% → 9〜10%に跳ね上がる</li>
+<li><strong>超極ネコ祭</strong>は両ネコ祭の限定キャラが同時に対象になる特別枠</li>
+<li><strong>プラチナチケットはいつ引いてもOK</strong>。ネコ祭期間外でもネコ祭限定キャラが出る可能性がある</li>
+<li><strong>レアチケットはネコ祭に温存</strong>するのがセオリー</li>
+<li><strong>リセマラは基本的に非推奨</strong>（デメリットが大きい／育成の積み上げが失われる）</li>
+</ol>
+<hr />
+<h2 id="13-コンテンツ地図と進行ロードマップ">13. コンテンツ地図と進行ロードマップ</h2>
+<h3 id="131-メインストーリー">13.1 メインストーリー</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>コンテンツ</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>日本編（第1〜3章）</strong></td>
+<td>チュートリアル的位置づけ。お宝を集めながら基本キャラを育成</td>
+</tr>
+<tr>
+<td><strong>未来編（第1〜3章）</strong></td>
+<td><strong>エイリアン</strong>が登場。お宝でエイリアン弱体化が必須。にゃんコンボ解放</td>
+</tr>
+<tr>
+<td><strong>宇宙編（第1〜3章）</strong></td>
+<td>さらに高難度。星（★）による難易度上昇</td>
+</tr>
+<tr>
+<td><strong>魔界編</strong></td>
+<td>悪魔属性が本格登場</td>
+</tr>
+<tr>
+<td><strong>レジェンドストーリー</strong></td>
+<td>本編とは別軸の高難度ステージ群</td>
+</tr>
+<tr>
+<td><strong>真レジェンドストーリー（新レジェンド）</strong></td>
+<td>レジェンドの上位。最終ステージが「古代神樹」</td>
+</tr>
+<tr>
+<td><strong>レジェンドストーリー0（ゼロレジェンド／零レジェ）</strong></td>
+<td><strong>Ver.12.0.0実装</strong>の最高難度。真レジェンド最終「古代神樹」クリアで解放</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="レジェンドストーリー0-の詳細">レジェンドストーリー0 の詳細</h4>
+<ul>
+<li><strong>規模</strong>: <strong>32エリア構成</strong>、各エリア6ステージ（ゼロフィールドのみ1ステージ）で <strong>合計190以上のステージ</strong>（2026年時点。Ver.15系で継続的に新マップが追加中）</li>
+<li><strong>登場する新敵</strong>: 論の賢者ソラクティス、名賢わんこ、天使メガミエル、ドヴェルダーク、ツバサターン ほか多数</li>
+<li><strong>最大の壁＝超賢者</strong>: <strong>敵から受ける妨害効果を大幅カット</strong>するため、停止・鈍足に依存した従来編成が機能しない。<strong>超賢者特効</strong>（攻撃1.2倍／被ダメ0.5倍／妨害効果7割減）持ちが事実上必須</li>
+<li><strong>難所フラグ</strong>: 「超激・伝説レアを使わない場合に攻略が難しくなるステージ」にマークが付く＝<strong>無課金編成での完全制覇は非常に厳しい</strong></li>
+<li><strong>報酬</strong>: <strong>異次元の素材（Z素材）</strong>の唯一の入手先。にゃんこ砲の土台・装飾の改造に必須。ほか本能玉・高額XPなど</li>
+<li><strong>Ver.15系で追加されたマップ例</strong>: ブック列島、マジカ幻想郷、マッスルエンパイアー、美術工房アートリエ、変異を伴う継承の楽園、ニューホライズン、ン・トーベ地方、おしゃれクレイジー</li>
+</ul>
+<h3 id="132-推奨進行ロードマップ">13.2 推奨進行ロードマップ</h3>
+<pre><code>1. リセマラは基本しない（やっても短時間で切り上げる）
+   ↓
+2. 日本編 第3章クリア（お宝を回収しながら）
+   ├ 育成優先: タンクネコ / キモネコ / ウシネコ / ネコトカゲ
+   └ パワーアップ: 働きネコ仕事効率・研究力・会計力を上げる
+   ↓
+3. 日本編のお宝を「最高（金）」にする  ← 狂乱の挑戦条件
+   ↓
+4. 未来編 第3章クリア（エイリアン対策を育成）
+   ├ 育成優先: ネコ探査機（対エイリアン壁）/ サイキックネコ（妨害）/ ネコムート（火力）
+   └ 未来編お宝でエイリアンを弱体化させる
+   ↓
+5. 狂乱ステージ全キャラ収集
+   └ 順序: ネコ → タンク → フィッシュ → トリ → ウシ → トカゲ or キモネコ
+   ↓
+6. レジェンドストーリーを「脱獄トンネル」まで優先攻略
+   ↓
+7. 大狂乱ステージ（狂乱キャラの第3形態解放）
+   ↓
+8. 宇宙編 → 超獣ステージ（5クリアで「古びたタマゴN101」）
+   ↓
+9. 真レジェンドストーリー → 古代神樹
+   ↓
+10. レジェンドストーリー0（超賢者環境）
+</code></pre>
+<hr />
+<h2 id="14-ステージ種別カタログ">14. ステージ種別カタログ</h2>
+<p>ストーリー以外の「スペシャルステージ」は<strong>日本編の福岡県クリア後</strong>に出現する。種類が多いので、目的別に整理する。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>種別</th>
+<th>目的</th>
+<th>特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>狂乱ステージ</strong>（9種）</td>
+<td>狂乱キャラ入手</td>
+<td>日本編お宝コンプが挑戦条件</td>
+</tr>
+<tr>
+<td><strong>大狂乱ステージ</strong></td>
+<td>狂乱キャラの第3形態解放</td>
+<td>超高難度。敵の体力・火力・妨害が極端</td>
+</tr>
+<tr>
+<td><strong>開眼ステージ</strong></td>
+<td>EXキャラの進化解放</td>
+<td>難易度別に段階構成</td>
+</tr>
+<tr>
+<td><strong>降臨ステージ</strong></td>
+<td>強力な報酬キャラ入手</td>
+<td>通常版／絶（超高難度）版／亜種がある。<strong>毎月4日間だけ開催</strong></td>
+</tr>
+<tr>
+<td><strong>大降臨ステージ</strong></td>
+<td>高難度報酬</td>
+<td>4段階の連続ステージ→ボス決戦</td>
+</tr>
+<tr>
+<td><strong>暴風ステージ</strong></td>
+<td>報酬キャラ</td>
+<td>「紅のカタストロフ」など。通常版と絶版</td>
+</tr>
+<tr>
+<td><strong>超獣討伐ステージ</strong></td>
+<td>超獣対策・報酬</td>
+<td>ガープラ密林／アシビニ砂漠／ジャンフォレ火山の3エリア×20段階</td>
+</tr>
+<tr>
+<td><strong>強襲ステージ</strong></td>
+<td>本能玉・素材</td>
+<td>月替わりでボスが変わる定期開催</td>
+</tr>
+<tr>
+<td><strong>曜日ステージ</strong></td>
+<td>育成素材・アイテム</td>
+<td>月〜金／土日で報酬が異なる</td>
+</tr>
+<tr>
+<td><strong>ゲリラステージ</strong></td>
+<td>XP・城開発素材・にゃんチケ</td>
+<td><strong>時間限定出現</strong>。日替わりで内容が変わる</td>
+</tr>
+<tr>
+<td><strong>マタタビステージ</strong></td>
+<td>進化素材マタタビ</td>
+<td>曜日別に色が変わる</td>
+</tr>
+<tr>
+<td><strong>発掘ステージ</strong></td>
+<td><strong>本能玉</strong>・XP</td>
+<td>統率力100。地図ドロップから挑戦。段階的に難度上昇</td>
+</tr>
+<tr>
+<td><strong>月間ステージ</strong></td>
+<td>季節イベント報酬</td>
+<td>毎月テーマが変わる期間限定</td>
+</tr>
+<tr>
+<td><strong>終末の連戦場</strong></td>
+<td>報酬</td>
+<td>初級〜極ムズの連続戦闘形式</td>
+</tr>
+<tr>
+<td><strong>にゃんこ塔 / 異界にゃんこ塔</strong></td>
+<td>節目報酬（マタタビ等）</td>
+<td>階層を登る形式</td>
+</tr>
+<tr>
+<td><strong>ネコ道場</strong></td>
+<td>スコア競争・ネコカン</td>
+<td>全ユーザーとスコアを競う</td>
+</tr>
+<tr>
+<td><strong>にゃんこ道検定</strong></td>
+<td>高額報酬</td>
+<td>戦い方を学ぶ形式。後半は高難度</td>
+</tr>
+<tr>
+<td><strong>イベント／コラボステージ</strong></td>
+<td>限定キャラ</td>
+<td>期間限定</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="15-狂乱大狂乱開眼ステージ">15. 狂乱・大狂乱・開眼ステージ</h2>
+<h3 id="151-狂乱ステージ">15.1 狂乱ステージ</h3>
+<ul>
+<li><strong>挑戦条件</strong>: 日本編のお宝を最高（金）にする</li>
+<li>入手できる「狂乱の〇〇」は<strong>無課金プレイヤーの主力</strong>。コスト対性能が非常に高い</li>
+<li><strong>攻略おすすめ順</strong>: ネコ → タンク → <strong>フィッシュ → トリ → ウシ → トカゲ or キモネコ</strong></li>
+</ul>
+<h3 id="152-大狂乱ステージ">15.2 大狂乱ステージ</h3>
+<p>狂乱キャラを<strong>第3形態に進化させる権利</strong>が得られる（最大のメリット）。狂乱キャラの第3形態は高難度でも通用する性能になる。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>優先度</th>
+<th>ステージ</th>
+<th>難易度</th>
+<th>攻略の要点</th>
+<th>主要キャラ例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>高</strong></td>
+<td>大狂乱のタンク</td>
+<td>易</td>
+<td>壁4〜5体＋長射程アタッカー</td>
+<td>狂乱ネコムート</td>
+</tr>
+<tr>
+<td><strong>高</strong></td>
+<td>大狂乱のネコ</td>
+<td>易</td>
+<td>「師匠」処理用の波動・遠方火力</td>
+<td>ラブリィずきんミーニャ</td>
+</tr>
+<tr>
+<td><strong>高</strong></td>
+<td>大狂乱のフィッシュ</td>
+<td>易</td>
+<td>波動対策 or 対赤妨害</td>
+<td>ネコパーフェクト</td>
+</tr>
+<tr>
+<td><strong>中</strong></td>
+<td>大狂乱のトリ</td>
+<td>中</td>
+<td>超射程 or 高耐久</td>
+<td>大狂乱ネコ島</td>
+</tr>
+<tr>
+<td><strong>中</strong></td>
+<td>大狂乱のウシ</td>
+<td>中</td>
+<td>高火力範囲攻撃で大量のライオンを処理。<strong>壁6体以上推奨</strong></td>
+<td>覚醒ネコムート</td>
+</tr>
+<tr>
+<td><strong>中</strong></td>
+<td>大狂乱のトカゲ</td>
+<td>中</td>
+<td>超射程 or 高火力で押し切る</td>
+<td>覚醒ネコムート</td>
+</tr>
+<tr>
+<td><strong>低</strong></td>
+<td>大狂乱の巨神</td>
+<td>難</td>
+<td>波動対策推奨</td>
+<td>タマとウルルン</td>
+</tr>
+<tr>
+<td><strong>低</strong></td>
+<td>大狂乱のバトル</td>
+<td>難</td>
+<td>赤・浮・白への妨害で突破力を削ぐ</td>
+<td>ネコ法師</td>
+</tr>
+<tr>
+<td><strong>EX</strong></td>
+<td>大狂乱のキモネコ</td>
+<td>難</td>
+<td><strong>波動対策キャラ必須</strong></td>
+<td>ねこタコつぼ</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>大狂乱ゴムネコ</strong>（大狂乱のネコの第3形態）は<strong>全ゲームを通じて最優秀クラスの壁</strong>。150円・高速移動の量産壁として最後まで使い続ける。</p>
+</blockquote>
+<h3 id="153-開眼ステージ">15.3 開眼ステージ</h3>
+<ul>
+<li>EXキャラの進化（第2形態）解放用ステージ。定期開催</li>
+<li>コストが安く優秀なEXキャラが多いため、見かけたら回収推奨</li>
+</ul>
+<hr />
+<h2 id="16-降臨ステージ攻略順">16. 降臨ステージ攻略順</h2>
+<h3 id="161-開催スケジュールの仕組み">16.1 開催スケジュールの仕組み</h3>
+<ul>
+<li>降臨ステージごとに<strong>毎月4日間の開催日が固定</strong>されている</li>
+<li><strong>月の前半で2日間・後半で2日間</strong>の計4日</li>
+<li>開催例（毎月）:</li>
+</ul>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>日程</th>
+<th>ステージ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-2日 / 15-16日</td>
+<td>女帝飛来</td>
+</tr>
+<tr>
+<td>3-4日 / 17-18日</td>
+<td>亡者デブウ降臨</td>
+</tr>
+<tr>
+<td>11-12日 / 25-26日</td>
+<td>地獄門</td>
+</tr>
+<tr>
+<td>13-14日 / 27-28日</td>
+<td>ブルーインパクト</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>挑戦の目安は未来編第3章クリア後</strong>。戦力と育成の土台が整ってから。</p>
+</blockquote>
+<h3 id="162-おすすめ攻略順">16.2 おすすめ攻略順</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>順位</th>
+<th>ステージ</th>
+<th>報酬キャラ</th>
+<th>難易度</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>地獄門</strong></td>
+<td>ネコ特急（ネコエクスプレス）</td>
+<td>★★★</td>
+<td><strong>報酬キャラが超優秀。最優先</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>女帝飛来</td>
+<td>ネコ球児</td>
+<td>★★</td>
+<td>対象キャラが揃ったら</td>
+</tr>
+<tr>
+<td>3</td>
+<td>亡者デブウ降臨</td>
+<td>ネコストーン（ネコカメカー）</td>
+<td>★★</td>
+<td>対ゾンビ・天使キャラ揃備後</td>
+</tr>
+<tr>
+<td>4</td>
+<td>断罪天使クオリネル</td>
+<td>ネコウェイ</td>
+<td>★★</td>
+<td>対天使キャラ揃備後</td>
+</tr>
+<tr>
+<td>5</td>
+<td>夜は短し夢見よ乙女</td>
+<td>子連れにゃんこ</td>
+<td>★★</td>
+<td>基本キャラ育成後</td>
+</tr>
+<tr>
+<td>6</td>
+<td>チワワン伯爵降臨</td>
+<td>ガラスネコ</td>
+<td>★★★</td>
+<td><strong>伝説・超激レア制限あり</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>ほの暗い沼の底から</td>
+<td>ネコックマ</td>
+<td>★★★★</td>
+<td>難易度高め・後回し推奨</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ブルーインパクト</td>
+<td>スーパーにゃん</td>
+<td>★★★★</td>
+<td>難易度最高・宇宙編進行後</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>絶シリーズ（超高難度版）の難易度順</strong>: 絶地獄門 &gt; 絶デブウ &gt; 絶チワワン &gt; 絶ユメミ &gt; 絶女帝 ⚠️</p>
+<hr />
+<h2 id="17-ネコ道場にゃんこ塔">17. ネコ道場・にゃんこ塔</h2>
+<h3 id="171-ネコ道場">17.1 ネコ道場</h3>
+<p>全ユーザーが<strong>獲得スコアを競う</strong>ランキングコンテンツ。</p>
+<p><strong>ルール</strong>
+- 敵城は<strong>「木人城」</strong>＝破壊不可（HP表記は「?????」）
+- <strong>木人城に一定ダメージを与えるごとに次の敵集団が出現</strong>する
+- 敵を倒すと<strong>スコアが加算</strong>される。ただし<strong>お金は一切もらえない</strong>（時間経過でのみ増加）
+- <strong>タイムアップ、または自城を落とされると終了</strong>
+- 敵城の攻撃は<strong>即死級</strong>。生き残り特性持ちかメタル特性持ち以外は耐えられない</p>
+<p><strong>スコアを伸ばすコツ</strong>
+1. <strong>木人城へのダメージ量がすべて</strong>。ダメージが小さいと敵が出てこず、スコアが伸びない → <strong>城破壊特性や高DPSの長射程アタッカー</strong>を軸にする
+2. お金が自然増加のみなので、<strong>初期所持金アップ／働きネコ関連のにゃんコンボ</strong>が効く
+3. <strong>スピードアップ・ニャンピュータが使い放題</strong>。積極的に活用する
+4. 生き残り／メタル持ちを前線に置いて即死を回避する</p>
+<p><strong>報酬</strong>
+- 獲得スコアで<strong>上位1%〜100%</strong>に振り分けられ、最終順位で報酬と称号が決まる
+- <strong>上位1〜10%</strong>: 伝説称号、ネコカン150、キャッツアイ【闇】×3
+- <strong>参加するだけでも最低限ネコカンが貰える</strong> → 毎回必ず参加すべき</p>
+<h3 id="172-にゃんこ塔-異界にゃんこ塔">17.2 にゃんこ塔 / 異界にゃんこ塔</h3>
+<ul>
+<li>階層を登っていく形式。節目の階層で高額報酬</li>
+<li><strong>異界にゃんこ塔の確定報酬</strong>:</li>
+<li><strong>10階・20階</strong>: 特殊マタタビの種（悪マタタビの種など）</li>
+<li><strong>30階</strong>: 金マタタビの種</li>
+<li><strong>40階</strong>: <strong>金マタタビ</strong>（確定）</li>
+<li><strong>50階</strong>: <strong>ネコ仮面のウリル</strong>（古代種・悪魔に鈍足＋呪い妨害の超優秀キャラ）</li>
+<li>ほかに「風雲にゃんこ塔」「黄金にゃんこ塔」など派生あり</li>
+</ul>
+<h3 id="173-にゃんこ道検定">17.3 にゃんこ道検定</h3>
+<ul>
+<li>戦い方を学びながらステージを順にクリアするコンテンツ</li>
+<li><strong>報酬が非常に良い</strong>が、後半のステージは難易度が高い</li>
+</ul>
+<hr />
+<h2 id="18-強敵カタログと対策">18. 強敵カタログと対策</h2>
+<h3 id="231-最強クラスの敵-top5">23.1 最強クラスの敵 TOP5</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>順位</th>
+<th>敵</th>
+<th>属性</th>
+<th>HP</th>
+<th>攻撃力</th>
+<th>脅威</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>ネコ仙人</strong></td>
+<td>古代種</td>
+<td>約400万</td>
+<td>66,666</td>
+<td>古代の呪いで妨害キャラを無力化</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>亡者デブウ</strong></td>
+<td>ゾンビ</td>
+<td>約300万</td>
+<td>高火力</td>
+<td>全方位攻撃＋復活</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>ウルトラメェメェ</strong></td>
+<td>黒</td>
+<td>高耐久</td>
+<td>100万超</td>
+<td><strong>バリア</strong>持ちで通常ダメージが通らない</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>エンシェントサイクロン</strong></td>
+<td>古代種</td>
+<td>超高耐久</td>
+<td>高火力</td>
+<td>古代の呪いを付与</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>真レジェンドブンブン</strong></td>
+<td>古代種</td>
+<td>高耐久</td>
+<td>高火力</td>
+<td>妨害無効＋高速前進</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="232-属性別の代表的な強敵と対策">23.2 属性別の代表的な強敵と対策</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>代表的な強敵</th>
+<th>対策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>赤</strong></td>
+<td>ぶんぶん先生（HP約40万 / 攻撃力9,000 / 射程200）</td>
+<td><strong>壁を絶え間なく生産し続ける</strong>のがほぼ唯一の対策。射程200を超えるアタッカーで削る</td>
+</tr>
+<tr>
+<td><strong>黒</strong></td>
+<td>ウルトラメェメェ</td>
+<td><strong>バリア貫通</strong>が必須（例: 無双の剣神 宮本武蔵）</td>
+</tr>
+<tr>
+<td><strong>浮いてる</strong></td>
+<td>ツバメンズ</td>
+<td>ノックバックカウンター対策に<strong>前線距離の調整</strong>が重要</td>
+</tr>
+<tr>
+<td><strong>エイリアン</strong></td>
+<td>イノヴァルカン</td>
+<td><strong>バリアブレイカーなしでの突入は即敗北</strong></td>
+</tr>
+<tr>
+<td><strong>古代種</strong></td>
+<td>イングリッス（複数出現）</td>
+<td><strong>呪い無効</strong>必須（例: ネコ神面のウリル）</td>
+</tr>
+<tr>
+<td><strong>天使</strong></td>
+<td>断罪天使クオリネル（HP約240万）</td>
+<td>天使特効キャラで対処</td>
+</tr>
+<tr>
+<td><strong>ゾンビ</strong></td>
+<td>亡者デブウ</td>
+<td><strong>ゾンビキラー必須</strong>（例: パンドラ）</td>
+</tr>
+<tr>
+<td><strong>メタル</strong></td>
+<td>メタルカオル君（攻撃力99,999）</td>
+<td><strong>クリティカル確率30%以上</strong>を確保した編成</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="233-絶対に忘れてはいけない3原則">23.3 絶対に忘れてはいけない3原則</h3>
+<ol>
+<li><strong>メタル敵 → 通常攻撃は1ダメージ固定。クリティカル特化編成が必須</strong></li>
+<li><strong>古代の呪い → 停止・遅延・ノックバックなどの妨害が全て無効化される</strong></li>
+<li><strong>ボス戦 → にゃんこ砲を序盤に無駄撃ちせず、ボス出現直後に使う</strong></li>
+</ol>
+<hr />
+<h2 id="19-編成理論">19. 編成理論</h2>
+<h3 id="191-基本テンプレート10枠">19.1 基本テンプレート（10枠）</h3>
+<pre><code>壁役      3〜4体
+妨害役    2〜3体
+アタッカー 3〜4体
+</code></pre>
+<p>「敵の進軍を抑えつつ、自軍の侵攻を促す」バランス型。<strong>これが全ての基礎形</strong>。</p>
+<h3 id="192-高難度真レジェンド序盤のテンプレート">19.2 高難度（真レジェンド序盤〜）のテンプレート</h3>
+<pre><code>壁 3 + 妨害 2 + 火力 2 = 7枠（コア）
+残り3枠 = 汎用にゃんコンボ枠 + 状況対応枠
+</code></pre>
+<p>コストパフォーマンスが最も高いとされる構成。</p>
+<h3 id="193-役割ごとの選定基準">19.3 役割ごとの選定基準</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>役割</th>
+<th>選定基準</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>壁役</strong></td>
+<td>攻撃力0でも構わない。<strong>耐久力が命</strong>。「打たれ強い」持ちが上位。汎用＝ゴムネコ／属性特化＝はにわ系</td>
+</tr>
+<tr>
+<td><strong>妨害役</strong></td>
+<td><strong>確定（必ず）妨害</strong>を最優先。攻撃頻度が短いほど拘束率が上がる</td>
+</tr>
+<tr>
+<td><strong>アタッカー</strong></td>
+<td><strong>DPS × 射程</strong>。敵の射程を上回れるかが最重要。属性特攻が乗るかを必ず確認</td>
+</tr>
+<tr>
+<td><strong>コンボ枠</strong></td>
+<td>1段目に配置。攻撃力アップ／初期所持金／研究力系</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="194-属性別編成13パターン">19.4 属性別編成（13パターン）</h3>
+<p>汎用 / 悪魔 / 赤 / エイリアン / ゾンビ / 天使 / 古代種 / 黒 / メタル / 白（無属性） / 浮いてる / 星4ステージ / 超獣</p>
+<p>各編成で汎用的に採用されやすい軸: <strong>黒キャス（妨害・呪い）／白ミタマ（確定停止）／フォノウ（超射程遠方火力）</strong></p>
+<h3 id="195-編成を組む手順実践フロー">19.5 編成を組む手順（実践フロー）</h3>
+<ol>
+<li><strong>敵編成を確認</strong>（ステージ情報／攻略サイト）</li>
+<li><strong>主要な敵の属性を洗い出す</strong> → 特攻が乗るアタッカーを選ぶ</li>
+<li><strong>敵の最長射程を確認</strong> → それを上回るアタッカーがいるか</li>
+<li><strong>厄介な特性を確認</strong>（バリア／シールド／ワープ／古代の呪い／波動）→ 対応する無効・ブレイカーを入れる</li>
+<li><strong>壁で残り枠を埋める</strong></li>
+<li><strong>1段目にコンボが成立するように並べ替える</strong></li>
+</ol>
+<hr />
+<h2 id="20-実戦テクニック集">20. 実戦テクニック集</h2>
+<h3 id="201-資金管理">20.1 資金管理</h3>
+<ul>
+<li><strong>働きネコを先に上げるか、キャラを先に出すか</strong>の判断がステージの成否を決める</li>
+<li>敵の第一波が遅いステージ → <strong>働きネコをMAX近くまで上げてから戦闘開始</strong></li>
+<li>敵が即座に来るステージ → 壁を出しつつ少しずつ財布を上げる</li>
+<li><strong>常に壁1体分の資金を残す</strong>（全部使い切ると壁が切れて崩壊する）</li>
+</ul>
+<h3 id="202-前線管理">20.2 前線管理</h3>
+<ul>
+<li><strong>押し込み</strong>: 壁を出し続けて前線を敵城側へ押し上げる。長射程アタッカーが敵城を直接叩けるようになる</li>
+<li><strong>引き込み</strong>: あえて敵を自城側へ引き寄せ、味方のにゃんこ砲・長射程の射程内で戦う</li>
+<li><strong>生産停止</strong>: 前線が伸びすぎると敵の増援が一気に湧く場合、意図的に生産を止めて前線を下げる</li>
+</ul>
+<h3 id="203-kbノックバック管理">20.3 KB（ノックバック）管理</h3>
+<ul>
+<li><strong>ふっとばす特性</strong>は敵を強制後退させ、時間を大きく稼ぐ</li>
+<li>ただし敵を<strong>にゃんこ砲や味方の射程外へ飛ばしてしまう</strong>逆効果もある。長射程アタッカー主体の編成ではふっとばしを控える判断も必要</li>
+<li>敵の「ノックバックカウンター」（KB時に反撃する敵）に注意 → 前線距離の調整で回避</li>
+</ul>
+<h3 id="204-射程管理アウトレンジ">20.4 射程管理（アウトレンジ）</h3>
+<ul>
+<li><strong>敵の射程 +1 でも上回れば一方的に殴れる</strong></li>
+<li>遠方攻撃キャラは「攻撃できない死角」があるため、<strong>必ず壁とセット</strong>で運用</li>
+<li>速度が速すぎるアタッカーは壁より前に出て被弾する → <strong>速度の遅い長射程を選ぶ</strong>か、壁を厚くする</li>
+</ul>
+<h3 id="205-ボス戦の定石">20.5 ボス戦の定石</h3>
+<ol>
+<li>ボス出現前に<strong>資金を最大まで貯める</strong></li>
+<li>ボス出現の瞬間に<strong>にゃんこ砲</strong>（かみなり砲なら停止、キャノンブレイク砲ならバリア破壊）</li>
+<li><strong>壁を全力生産</strong>して守りながら、主力アタッカーを一気に投入</li>
+<li>妨害役を切らさない（停止・鈍足のループを維持）</li>
+</ol>
+<h3 id="206-アイテムの使いどころ">20.6 アイテムの使いどころ</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>アイテム</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>おかめはちもく</strong></td>
+<td>クリア時の獲得XP <strong>1.5倍</strong>。XP稼ぎで必須</td>
+</tr>
+<tr>
+<td><strong>トレジャーレーダー</strong></td>
+<td>お宝が確定で最高になる。難関ステージのお宝回収に</td>
+</tr>
+<tr>
+<td><strong>ネコボン / スニャイパー / ゴム風船</strong> など</td>
+<td>高難度の初回クリア用の保険</td>
+</tr>
+<tr>
+<td><strong>スピードアップ</strong></td>
+<td>Ver.15.4より<strong>全ユーザー常時使い放題</strong>に</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="21-アイテム完全一覧">21. アイテム完全一覧</h2>
+<h3 id="211-バトルアイテム出撃前に選択">21.1 バトルアイテム（出撃前に選択）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>アイテム</th>
+<th>効果</th>
+<th>使いどころ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ネコボン</strong></td>
+<td><strong>お財布レベルをMAX</strong>にした状態で開始</td>
+<td>高コスト主力を序盤から出したい高難度</td>
+</tr>
+<tr>
+<td><strong>スニャイパー</strong></td>
+<td>敵をノックバックさせる狙撃を使用可能に</td>
+<td>押し込まれた前線を戻す</td>
+</tr>
+<tr>
+<td><strong>ゴム風船</strong></td>
+<td>味方の耐久を補助</td>
+<td>壁が持たないステージ</td>
+</tr>
+<tr>
+<td><strong>ニャンピュータ</strong></td>
+<td><strong>自動でキャラを出撃</strong>させる。<strong>2個使うとクリア済みステージを戦闘スキップ</strong>（1日10回まで）</td>
+<td>周回・ネコ道場</td>
+</tr>
+<tr>
+<td><strong>おかめはちもく</strong></td>
+<td>クリア時の<strong>獲得XPが1.5倍</strong></td>
+<td>XP稼ぎステージで必須</td>
+</tr>
+<tr>
+<td><strong>トレジャーレーダー</strong></td>
+<td><strong>お宝・ドロップ報酬を100%獲得</strong></td>
+<td>お宝の最後の1個、低確率ドロップキャラ狙い</td>
+</tr>
+<tr>
+<td><strong>スピードアップ</strong></td>
+<td>戦闘速度<strong>2倍</strong>（条件が合えば3倍）。<strong>Ver.15.4より全ユーザー常時使い放題</strong></td>
+<td>常時ON推奨</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="212-統率力回復系">21.2 統率力・回復系</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>アイテム</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>リーダーシップ</strong></td>
+<td>統率力を回復。ユーザーランク到達報酬で入手</td>
+</tr>
+<tr>
+<td><strong>統率力回復（広告視聴）</strong></td>
+<td>1日1回無料</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="213-育成素材">21.3 育成素材</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>分類</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>マタタビ</strong></td>
+<td>緑・紫・赤・青・黄・<strong>虹・古代・悪・金</strong> の各マタタビ＋各種の種（種5個→マタタビ1個）</td>
+</tr>
+<tr>
+<td><strong>獣石 / 獣結晶</strong></td>
+<td>第4形態への進化素材</td>
+</tr>
+<tr>
+<td><strong>キャッツアイ</strong></td>
+<td>EX・レア・激レア・超激レア・伝説レア・<strong>闇</strong> の各レアリティ用。レベル上限突破に使用</td>
+</tr>
+<tr>
+<td><strong>ネコビタン</strong></td>
+<td>A・B・C。ステータス強化用</td>
+</tr>
+<tr>
+<td><strong>城開発素材</strong></td>
+<td>レンガ、羽根、備長炭、鋼の歯車、黄金、宇宙石、謎の骨、アンモナイト（各通常版と <strong>Z版</strong>）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="214-ガチャ関連">21.4 ガチャ関連</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>チケット</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>レアチケット</strong></td>
+<td>通常レアガチャ1回分。<strong>ネコ祭に温存する</strong></td>
+</tr>
+<tr>
+<td><strong>にゃんこチケット</strong></td>
+<td>にゃんこガチャ用（EXキャラ・アイテム）</td>
+</tr>
+<tr>
+<td><strong>プラチナチケット</strong></td>
+<td><strong>超激レア確定</strong>。いつ引いてもOK</td>
+</tr>
+<tr>
+<td><strong>レジェンドチケット</strong></td>
+<td>伝説レア5%／超激レア95%のレジェンドガチャ用。最高級</td>
+</tr>
+<tr>
+<td><strong>ネコカン</strong></td>
+<td>課金石。ガチャ・統率力回復・アイテム購入に使用</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="22-ユーザーランク">22. ユーザーランク</h2>
+<h3 id="221-仕組み">22.1 仕組み</h3>
+<ul>
+<li><strong>ユーザーランク（UR）＝ 所持している全キャラのレベル合計＋施設（パワーアップ）レベルの合計</strong></li>
+<li>キャラを1レベル上げるごとに <strong>UR +1</strong></li>
+<li>ネコ基地の左上から確認できる</li>
+</ul>
+<h3 id="222-主要な到達報酬">22.2 主要な到達報酬</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ランク</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>900 / 1000 / 1200 など</strong></td>
+<td>激レア・超激レアのレベル上限が段階的に <strong>Lv.30</strong> まで解放</td>
+</tr>
+<tr>
+<td><strong>3650</strong></td>
+<td><strong>狂乱キャラをXPで Lv.30 まで上げられるようになる</strong>（戦力に直結する重要な節目）</td>
+</tr>
+<tr>
+<td><strong>16001</strong></td>
+<td>ネコ超人のプラス上限が90に。<strong>全レベル制限が解放される区切り</strong></td>
+</tr>
+<tr>
+<td><strong>20001</strong></td>
+<td>キャッツアイ【闇】×3</td>
+</tr>
+<tr>
+<td><strong>25000 / 30000</strong></td>
+<td>レジェンドチケット 各1枚</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>節目ごとに<strong>リーダーシップ</strong>（統率力回復）も貰える。</p>
+</blockquote>
+<h3 id="223-効率的な上げ方">22.3 効率的な上げ方</h3>
+<ol>
+<li><strong>低レア（基本・EX・レア）を優先</strong>して育てる — 必要XPが少なくURが伸びやすい</li>
+<li><strong>ドロップキャラを活用</strong> — ガチャキャラよりXP効率が良い</li>
+<li><strong>低レベルのキャラを広く巡回して上げる</strong> — レベルが高いほど必要XPが増えるため、多くのキャラを浅く上げる方が効率的</li>
+</ol>
+<blockquote>
+<p>ただし攻略効率とのバランスを取ること。<strong>使わないキャラをURのためだけに上げるのは中盤以降にすべき</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="23-稼ぎxp素材ネコカン">23. 稼ぎ（XP・素材・ネコカン）</h2>
+<h3 id="231-xp経験値稼ぎ">23.1 XP（経験値）稼ぎ</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>手段</th>
+<th>効率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>超極ゲリラ経験値にゃ！</strong></td>
+<td><strong>最効率</strong>。勉強力MAX＋お宝MAXで確実に100万XP、運が良ければ200万XP。おかめはちもく＋トレジャーレーダー使用で<strong>約300万XP</strong>が確実</td>
+</tr>
+<tr>
+<td><strong>極ゲリラ経験値にゃ！</strong></td>
+<td>次点。ゲリラのため出現タイミングに注意</td>
+</tr>
+<tr>
+<td><strong>経験は蜜の味（土日）</strong></td>
+<td>土曜・日曜開催。「超激ムズ」で大量XP</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="232-xp効率を上げる要素">23.2 XP効率を上げる要素</h3>
+<ul>
+<li><strong>勉強力</strong>: Lv.20で約2倍、Lv.20+10で約2.5倍（永続）</li>
+<li><strong>関西のお宝（関西のノリ）</strong>: 100%発動で50%ずつ加算</li>
+<li><strong>おかめはちもく</strong>: クリア時XP 1.5倍</li>
+<li><strong>広告視聴</strong>: 獲得XP 2倍（<strong>1日3回</strong>まで）</li>
+</ul>
+<h3 id="233-マタタビ稼ぎ">23.3 マタタビ稼ぎ</h3>
+<ul>
+<li>曜日別のマタタビステージを周回</li>
+<li>にゃんこ神社にXP 100万奉納（虹マタタビ等が約1%、30回で確定 ⚠️）</li>
+<li>異界にゃんこ塔40階クリア報酬</li>
+</ul>
+<h3 id="234-本能玉稼ぎ">23.4 本能玉稼ぎ</h3>
+<ul>
+<li>発掘ステージ（地図ドロップ／統率力100）</li>
+<li>ゲリラ「秘宝の眠る孤島」（Bランクまで）</li>
+<li>超生命体強襲EXステージ（高ランク玉が出やすい）</li>
+</ul>
+<h3 id="235-ネコカン課金石">23.5 ネコカン（課金石）</h3>
+<ul>
+<li>入手経路が極めて限られる。<strong>ガチャは超ネコ祭／極ネコ祭に集中投下</strong>するのが原則</li>
+<li>ステージ初回クリア報酬、イベント、ミッションなどでコツコツ貯める</li>
+</ul>
+<hr />
+<h2 id="24-無課金おすすめキャラ役割別">24. 無課金おすすめキャラ（役割別）</h2>
+<p>ガチャに頼らず、<strong>ステージ報酬・進化・イベントで入手できる</strong>強キャラ。<strong>ここを固めれば高難度の入り口まで到達できる</strong>。</p>
+<h3 id="壁役">壁役</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>キャラ</th>
+<th>入手先</th>
+<th>性能の要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>大狂乱のゴムネコ</strong></td>
+<td>大狂乱のタンク降臨</td>
+<td><strong>150円で生産できる高速移動の量産壁</strong>。無課金最強の壁</td>
+</tr>
+<tr>
+<td><strong>ネコカメカー</strong></td>
+<td>亡者デブウ降臨</td>
+<td>攻撃時に長時間その場に留まる高耐久壁。「動かない壁」として機能</td>
+</tr>
+<tr>
+<td><strong>にゃんコーン</strong></td>
+<td>三途の沼のヌシ大降臨</td>
+<td><strong>古代種・悪魔に打たれ強い</strong>量産壁。高難度で刺さる</td>
+</tr>
+<tr>
+<td><strong>ガラスネコ</strong></td>
+<td>チワワン伯爵降臨</td>
+<td>低コストの汎用壁</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="妨害役">妨害役</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>キャラ</th>
+<th>入手先</th>
+<th>性能の要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ネコボンバー</strong></td>
+<td>ネコの日のゲリラステージ</td>
+<td><strong>黒い敵の動きを必ず止める</strong>。対黒で最強レベルの妨害</td>
+</tr>
+<tr>
+<td><strong>ネコ仮面のウリル</strong></td>
+<td>異界にゃんこ塔 50階</td>
+<td><strong>古代種・悪魔に鈍足＋呪い</strong>。古代種攻略の要</td>
+</tr>
+<tr>
+<td><strong>ネコジャラミ／サイキックネコ</strong></td>
+<td>イベント・進化</td>
+<td>対エイリアン妨害</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="アタッカー">アタッカー</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>キャラ</th>
+<th>入手先</th>
+<th>性能の要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>覚醒のネコムート</strong></td>
+<td><strong>未来編3章クリア</strong>で進化</td>
+<td>移動速度が非常に速い高機動アタッカー。<strong>無課金の主砲</strong></td>
+</tr>
+<tr>
+<td><strong>ネコエクスプレス（ネコ特急）</strong></td>
+<td>地獄門</td>
+<td>単体高火力＋<strong>撃破時お金2倍</strong>。周回でも活躍</td>
+</tr>
+<tr>
+<td><strong>飛脚ネコ</strong></td>
+<td>超獣討伐ミッション</td>
+<td><strong>赤い敵に超ダメージ</strong>の遠方範囲攻撃</td>
+</tr>
+<tr>
+<td><strong>イディN</strong></td>
+<td>レジェンドストーリー全クリア</td>
+<td><strong>古代種に超ダメージ</strong>の高機動アタッカー</td>
+</tr>
+<tr>
+<td><strong>猿人ネコルーザ</strong></td>
+<td>起源の覚醒</td>
+<td>古代種に打たれ強い＋超ダメージ</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="量産アタッカー">量産アタッカー</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>キャラ</th>
+<th>入手先</th>
+<th>性能の要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ネコゼリーまんじゅう</strong></td>
+<td>古王妃飛来</td>
+<td><strong>必ず波動を放つ</strong>。射程が非常に広く、Lv.50で合計ダメージ約8万</td>
+</tr>
+<tr>
+<td><strong>狂乱シリーズ（第3形態）</strong></td>
+<td>大狂乱ステージ</td>
+<td>コスト対性能が全ゲーム屈指</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>無課金の到達点</strong>: 上記＋日本編／未来編のお宝コンプ＋パワーアップ強化で、<strong>レジェンドストーリー中盤〜「脱獄トンネル」クラス</strong>までは十分クリアできる。真レジェンド以降は超激レア・伝説レアの育成がほぼ必須になる。</p>
+</blockquote>
+<hr />
+<h2 id="25-最強キャラランキング2026年時点">25. 最強キャラランキング（2026年時点）</h2>
+<blockquote>
+<p>出典: Game8「最強キャラランキング【最新版】」。評価基準は<strong>最新環境への対応力と汎用性</strong>を最重視。</p>
+</blockquote>
+<h3 id="評価基準の内訳">評価基準の内訳</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>観点</th>
+<th>重み</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>環境適応性（レジェンドストーリー0・超賢者への対応）</td>
+<td>★★★</td>
+</tr>
+<tr>
+<td>汎用性（活躍できるステージの多さ）</td>
+<td>★★★</td>
+</tr>
+<tr>
+<td>特化性（得意ステージでの活躍度）</td>
+<td>★★☆</td>
+</tr>
+<tr>
+<td>本能・超本能（解放前提での強さ）</td>
+<td>★★☆</td>
+</tr>
+<tr>
+<td>役割（アタッカー評価を高く設定）</td>
+<td>★★☆</td>
+</tr>
+<tr>
+<td>唯一性（代替キャラの少なさ）</td>
+<td>★☆☆</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="top30">TOP30</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>順位</th>
+<th>キャラ</th>
+<th>レア度</th>
+<th>特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>イザナギ</strong></td>
+<td>伝説レア</td>
+<td>中射程遠方アタッカー、<strong>全属性極ダメージ</strong>、確定鈍足</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>白ルナ</strong></td>
+<td>伝説レア</td>
+<td>長射程、赤/ゾンビ/エイリアン/古代種対応、<strong>確定停止</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>にゃんま</strong></td>
+<td>伝説レア</td>
+<td>短射程超高火力、攻撃頻度が高い</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>コスモ</strong></td>
+<td>伝説レア</td>
+<td>超射程全方位、波動＋確定停止</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>かさじぞう</strong></td>
+<td>伝説レア</td>
+<td>中射程量産火力、生き残り持ち</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>シラス</strong></td>
+<td>伝説レア</td>
+<td>中射程超火力、波動/毒撃無効</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>白フォノ</strong></td>
+<td>伝説レア</td>
+<td>超射程遠方、<strong>全属性超ダメージ</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>黒フォノ</strong></td>
+<td>伝説レア</td>
+<td>超射程遠方、確定鈍足</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>黒ルーノ</strong></td>
+<td>伝説レア</td>
+<td>無/エイリアン/浮/ゾンビ対応、<strong>6種の無効特性</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>白ルーノ</strong></td>
+<td>伝説レア</td>
+<td>短射程壁兼妨害、再生産約9.8秒</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>カイ</strong></td>
+<td>伝説レア</td>
+<td>浮/悪魔高耐久、ふっとばし無効</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>ハヤブサ</strong></td>
+<td>伝説レア</td>
+<td>中射程火力兼妨害、KB7</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>ゼログラ</strong></td>
+<td>伝説レア</td>
+<td>ゾンビ/古代種対応、確定停止</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>黒キャス</strong></td>
+<td>伝説レア</td>
+<td>長射程遠方、<strong>呪い</strong>妨害</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>黒ルナ</strong></td>
+<td>伝説レア</td>
+<td>浮/天使/悪魔/無対応、5種の無効特性</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>スタール</strong></td>
+<td>伝説レア</td>
+<td>メタル/ゾンビ/悪魔対応、約50%鈍足</td>
+</tr>
+<tr>
+<td>17〜30</td>
+<td>ベビー / 織田信長 / ライデン / うらしま / ももたろう / テコルガ / ユーヴェンス / アキラ / メカ子 / アフロディーテ / アマテラス / ガネーシャ / 夏カイ / メララ</td>
+<td>超激レア（A+ランク帯）</td>
+<td>多属性対応・高火力・妨害・支援など役割別に強力</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="読み解き方">読み解き方</h3>
+<ul>
+<li>上位を<strong>伝説レアが独占</strong>しているが、<strong>超激レアのA+帯（17位以降）でも高難度は十分クリア可能</strong></li>
+<li><strong>無課金でも狂乱シリーズ＋EX・レアの育成で、レジェンドストーリー中盤までは到達できる</strong></li>
+<li>「確定（必ず）妨害」「全属性特攻」「超射程」を持つキャラが上位に集中している＝<strong>これが環境の評価軸</strong></li>
+</ul>
+<hr />
+<h2 id="26-詰まりポイント別-処方箋">26. 詰まりポイント別 処方箋</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>原因</th>
+<th>処方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日本編で急に勝てなくなった</td>
+<td>パワーアップ不足</td>
+<td><strong>働きネコ仕事効率・研究力・会計力</strong>を上げる</td>
+</tr>
+<tr>
+<td>未来編でエイリアンに勝てない</td>
+<td>未来編お宝が未取得</td>
+<td><strong>未来編のお宝を集めてエイリアンを弱体化</strong>させる</td>
+</tr>
+<tr>
+<td>敵に1ダメージしか出ない</td>
+<td>メタル属性</td>
+<td><strong>クリティカル持ち</strong>を編成（＋水鉄砲）</td>
+</tr>
+<tr>
+<td>倒した敵が復活してくる</td>
+<td>ゾンビ属性</td>
+<td><strong>ゾンビキラー</strong>を編成</td>
+</tr>
+<tr>
+<td>停止・鈍足が全く効かない</td>
+<td>古代の呪い（古代種）または超賢者</td>
+<td><strong>呪い無効</strong>キャラ／<strong>超賢者特効</strong>キャラ。妨害に頼らない火力押し</td>
+</tr>
+<tr>
+<td>攻撃が全く通らない</td>
+<td>バリア／シールド</td>
+<td><strong>バリアブレイカー／悪魔シールドブレイカー</strong>（キャノンブレイク砲も可）</td>
+</tr>
+<tr>
+<td>味方が後ろに飛ばされる</td>
+<td>敵のワープ</td>
+<td><strong>ワープ無効</strong>持ち、または射程で外から殴る</td>
+</tr>
+<tr>
+<td>壁が一瞬で溶ける</td>
+<td>属性相性 or 耐久不足</td>
+<td>属性対応の「打たれ強い」壁＋<strong>攻撃力ダウン</strong>妨害</td>
+</tr>
+<tr>
+<td>前線が押し切られる</td>
+<td>資金管理ミス</td>
+<td>壁1体分の資金を常に残す。研究力を上げて再生産を短縮</td>
+</tr>
+<tr>
+<td>ボスに火力が届かない</td>
+<td>射程負け</td>
+<td>敵の射程を上回る<strong>遠方攻撃／超射程</strong>アタッカーを用意</td>
+</tr>
+<tr>
+<td>そもそも戦力が足りない</td>
+<td>ガチャ・育成不足</td>
+<td><strong>ネコ祭でレアチケを使う</strong>／狂乱シリーズを全収集・第3形態化</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="27-用語集">27. 用語集</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>用語</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>壁</strong></td>
+<td>敵を足止めするための低コスト・高耐久キャラ</td>
+</tr>
+<tr>
+<td><strong>量産</strong></td>
+<td>安価で繰り返し出せるアタッカー</td>
+</tr>
+<tr>
+<td><strong>アウトレンジ</strong></td>
+<td>敵の射程外から一方的に攻撃すること</td>
+</tr>
+<tr>
+<td><strong>KB</strong></td>
+<td>ノックバック。攻撃を受けて後退すること</td>
+</tr>
+<tr>
+<td><strong>確定停止／確定鈍足</strong></td>
+<td>「必ず」表記の妨害。100%発動</td>
+</tr>
+<tr>
+<td><strong>バリブレ</strong></td>
+<td>バリアブレイカー</td>
+</tr>
+<tr>
+<td><strong>ゾンキラ</strong></td>
+<td>ゾンビキラー</td>
+</tr>
+<tr>
+<td><strong>NP</strong></td>
+<td>にゃんこポイント。本能・超本能の解放に使う</td>
+</tr>
+<tr>
+<td><strong>キャッツアイ</strong></td>
+<td>レベル上限を超えて育成するための素材（レア度別・闇）</td>
+</tr>
+<tr>
+<td><strong>ネコビタン</strong></td>
+<td>ステータス強化に使う素材</td>
+</tr>
+<tr>
+<td><strong>マタタビ</strong></td>
+<td>第3・第4形態への進化素材</td>
+</tr>
+<tr>
+<td><strong>にゃんこ全書</strong></td>
+<td>図鑑。重複キャラをNPに変換できる</td>
+</tr>
+<tr>
+<td><strong>ゼロレジェ</strong></td>
+<td>レジェンドストーリー0</td>
+</tr>
+<tr>
+<td><strong>零レジェ</strong></td>
+<td>レジェンドストーリー0の略称（同上）</td>
+</tr>
+<tr>
+<td><strong>Z素材</strong></td>
+<td>異次元の素材。にゃんこ砲の土台・装飾改造に必要</td>
+</tr>
+<tr>
+<td><strong>トレフェス</strong></td>
+<td>お宝ドロップ率アップ期間</td>
+</tr>
+<tr>
+<td><strong>お財布</strong></td>
+<td>所持金上限（働きネコレベルで決まる）</td>
+</tr>
+<tr>
+<td><strong>フルボッコ</strong></td>
+<td>大量の敵に一斉に殴られること</td>
+</tr>
+<tr>
+<td><strong>絶シリーズ</strong></td>
+<td>降臨ステージの超高難度版（絶地獄門など）</td>
+</tr>
+<tr>
+<td><strong>木人城</strong></td>
+<td>ネコ道場の破壊不可能な敵城</td>
+</tr>
+<tr>
+<td><strong>クリスタル（お宝）</strong></td>
+<td>未来編・宇宙編のエイリアン弱体化お宝</td>
+</tr>
+<tr>
+<td><strong>果実（お宝）</strong></td>
+<td>属性別の特性効果を強化するお宝</td>
+</tr>
+<tr>
+<td><strong>トレレ</strong></td>
+<td>トレジャーレーダー</td>
+</tr>
+<tr>
+<td><strong>ニャンピュ</strong></td>
+<td>ニャンピュータ</td>
+</tr>
+<tr>
+<td><strong>リダシ</strong></td>
+<td>リーダーシップ（統率力回復アイテム）</td>
+</tr>
+<tr>
+<td><strong>UR</strong></td>
+<td>ユーザーランク</td>
+</tr>
+<tr>
+<td><strong>開眼</strong></td>
+<td>EXキャラの進化解放ステージ</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="28-出典">28. 出典</h2>
+<ul>
+<li><a href="https://game8.jp/battlecats/207073">【にゃんこ大戦争】基本戦術と戦い方のコツを解説！｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/204698">【にゃんこ大戦争】初心者必見！序盤の効率的な進め方｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/207051">【にゃんこ大戦争】最強キャラランキング【最新版】｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/232164">【にゃんこ大戦争】特性（効果と能力）一覧｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/497190">【にゃんこ大戦争】ガチャの演出と排出確率｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/343943">【にゃんこ大戦争】本能玉のおすすめキャラと効果｜入手方法｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/577711">【にゃんこ大戦争】超本能の解放おすすめキャラと解放条件・やり方｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/542591">【にゃんこ大戦争】にゃんこ砲（主砲・土台・装飾）の効果と付け替え方｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/205122">【にゃんこ大戦争】Ver15.5.1最新アップデートの情報とアプデ内容まとめ｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/504904">【にゃんこ大戦争】レジェンドストーリー0（ゼロレジェンド）の攻略一覧｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/208020">【にゃんこ大戦争】大狂乱の優先順位と攻略方法一覧｜ゲームエイト</a></li>
+<li><a href="https://gameranbu.jp/battlecats/">にゃんこ大戦争攻略wiki - ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/e9d795c63f628987b5d0">【にゃんこ大戦争】にゃんコンボ｜ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/c7fdb39a0fded7db8848">【にゃんこ大戦争】パワーアップの優先順位と効率的なレベル上げのやり方｜ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/3cc6c8601ea90728b80a">【にゃんこ大戦争】にゃんこ砲の開発おすすめ優先度と効果｜ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/fc0b6701e2fae3ea84d4">【にゃんこ大戦争】経験値(XP)の効率的な稼ぎ方とおすすめの使い道｜ゲーム乱舞</a></li>
+<li><a href="https://games.appmatch.jp/gamewiki/battlecats/177946785292702184/">【にゃんこ大戦争】最強敵キャラランキングTOP10｜属性別一覧と対策【2026年最新】｜スマホゲームNavi</a></li>
+<li><a href="https://games.appmatch.jp/gamewiki/battlecats/547145938-99/">にゃんこ大戦争ステータス完全攻略：DPS・射程・壁役の見方｜スマホゲームNavi</a></li>
+<li><a href="https://games.appmatch.jp/gamewiki/battlecats/177794172717738198/">【にゃんこ大戦争】ガチャおすすめ比較TOP5｜確率・費用・タイミング一覧【2026年最新】｜スマホゲームNavi</a></li>
+<li><a href="http://nyanko.momokuri777.com/the-battle-cats-enemy-characters">にゃんこ大戦争敵キャラ徹底解析｜属性別・代表例・攻略法まとめ</a></li>
+<li><a href="https://asobu.raimugi.com/blog-entry-nyanko_kouka_nouryoku.html">初心者必見！にゃんこ大戦争のダメージ倍率＆発動率まとめ</a></li>
+<li><a href="https://fukugyou-kakkiblog.com/power-nyanko/">【にゃんこ大戦争】倍率表記について徹底解説！｜にゃんこ大戦争攻略サイト</a></li>
+<li><a href="https://fukugyou-kakkiblog.com/%E3%81%AB%E3%82%83%E3%82%93%E3%81%93%E5%A4%A7%E6%88%A6%E4%BA%89%E6%9C%80%E5%BC%B7%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E7%B7%A8%E6%88%90%E3%81%A8%E4%BD%9C%E3%82%8A%E6%96%B9/">【にゃんこ大戦争】最強パーティー編成を13属性別に徹底紹介！｜にゃんこ大戦争攻略サイト</a></li>
+<li><a href="https://games.appmatch.jp/gamewiki/battlecats/547145938-34/">にゃんこ大戦争 マタタビ完全ガイド｜スマホゲームNavi</a></li>
+<li><a href="https://games.appmatch.jp/gamewiki/battlecats/547145938-37/">にゃんこ大戦争 第四形態の進化方法とおすすめキャラ｜スマホゲームNavi</a></li>
+<li><a href="https://www.ponos.jp/news/2026/04/%E3%80%8E%E3%81%AB%E3%82%83%E3%82%93%E3%81%93%E5%A4%A7%E6%88%A6%E4%BA%89%E3%80%8F%E6%9C%9F%E9%96%93%E9%99%90%E5%AE%9A%E3%83%AC%E3%82%A2%E3%82%AC%E3%83%81%E3%83%A3%E3%80%8C%E8%B6%85%E6%A5%B5%E3%83%8D/">『にゃんこ大戦争』期間限定レアガチャ「超極ネコ祭」開催のお知らせ｜ポノス株式会社</a></li>
+<li><a href="https://battlecats.club/">にゃんこポータル | にゃんこ大戦争</a></li>
+<li><a href="https://ryu-ku.net/12/9499">にゃんこ大戦争のお宝効果を解説！【仕組みや倍率、効率的な集め方も！】｜りゅ〜く.net</a></li>
+<li><a href="https://game8.jp/battlecats/204342">【にゃんこ大戦争】スペシャルステージの攻略一覧｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/367893">【にゃんこ大戦争】降臨ステージの攻略と開催日一覧｜おすすめの攻略順番・優先順位｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/204386">【にゃんこ大戦争】ガチャのおすすめ度とスケジュール｜今引くべきガチャ｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/542848">【にゃんこ大戦争】ネコ道場の攻略と報酬｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/652446">【にゃんこ大戦争】にゃんこ道検定の攻略と報酬｜ネコ道場｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/204347">【にゃんこ大戦争】アイテム一覧｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/206891">【にゃんこ大戦争】ユーザーランクの報酬一覧と効率的な上げ方｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/204701">【にゃんこ大戦争】最高のお宝のドロップ確率と効率の良い出し方｜ゲームエイト</a></li>
+<li><a href="https://gameranbu.jp/battlecats/68f5e15893eb27388e52">【にゃんこ大戦争】無課金のおすすめ最強キャラと攻略のコツ｜ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/9c8a4ee9be5cfd844e9f">【にゃんこ大戦争】異界にゃんこ塔の攻略と報酬まとめ｜ゲーム乱舞</a></li>
+<li><a href="https://gameranbu.jp/battlecats/9048e08ae58b0c8d330b">【にゃんこ大戦争】ゲリラ(降臨)ステージの一覧と開催スケジュール｜ゲーム乱舞</a></li>
+<li><a href="https://game8.jp/battlecats/207245">【にゃんこ大戦争】超激ダイナマイツの当たりキャラと評価｜ゲームエイト</a></li>
+<li><a href="https://game8.jp/battlecats/207251">【にゃんこ大戦争】ダークヒーローズの当たりキャラと評価｜ゲームエイト</a></li>
+</ul>
+  </main>
+</div>
+
+<button id="theme-toggle" type="button" aria-label="配色を切り替える">◐</button>
+
+<script>
+(function () {
+  // --- テーマ切替 ---
+  var root = document.documentElement;
+  var saved = null;
+  try { saved = localStorage.getItem('nyanko-theme'); } catch (e) {}
+  if (saved) root.setAttribute('data-theme', saved);
+
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var current = root.getAttribute('data-theme') || (prefersDark ? 'dark' : 'light');
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('nyanko-theme', next); } catch (e) {}
+  });
+
+  // --- 目次の現在地ハイライト ---
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var byId = {};
+  var targets = [];
+  links.forEach(function (a) {
+    var id = decodeURIComponent(a.getAttribute('href') || '').slice(1);
+    var el = id && document.getElementById(id);
+    if (el) { byId[id] = a; targets.push(el); }
+  });
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+
+  var visible = new Set();
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) visible.add(entry.target.id);
+      else visible.delete(entry.target.id);
+    });
+    var first = targets.filter(function (t) { return visible.has(t.id); })[0];
+    if (!first) return;
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (byId[first.id]) byId[first.id].classList.add('active');
+  }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+
+  targets.forEach(function (t) { observer.observe(t); });
+})();
+</script>
+</body>
+</html>
