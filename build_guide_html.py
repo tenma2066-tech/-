@@ -288,7 +288,7 @@ tbody tr:hover td {{ background: var(--accent-soft); }}
 <header class="hero">
   <h1>にゃんこ大戦争 完全マスターガイド</h1>
   <p>基礎システムから高難度攻略まで、一冊で完結する攻略リファレンス</p>
-  <div class="meta">Ver.15.5.1 準拠 ／ 2026-07-28 作成 ／ 全28章</div>
+  <div class="meta">Ver.15.5.1 準拠 ／ 2026-07-28 作成 ／ 全36章</div>
 </header>
 
 <div class="shell">
